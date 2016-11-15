@@ -6,7 +6,9 @@ sbis_create_project("snake-game" library)
 
 sbis_add_dependency(engine "../../engine")
 sbis_add_sdk_dependency("sbis-xml300")
-sbis_add_sdk_dependency("sbis-android-loader")
+if(ANDROID)
+    sbis_add_sdk_dependency("sbis-android-loader")
+endif()
 sbis_add_sdk_dependency("sbis-bl-core300")
 sbis_add_sdk_dependency("sbis-bl-metadata-basic300")
 sbis_add_sdk_dependency("sbis-rpc300")
@@ -14,19 +16,29 @@ sbis_add_sdk_dependency("sbis-rpc-client300")
 sbis_add_sdk_dependency("sbis-communication300")
 sbis_add_sdk_dependency("sbis-lib300")
 sbis_add_sdk_dependency("curl")
-sbis_add_sdk_dependency("iconv")
-sbis_add_sdk_dependency("openssl")
-sbis_use_library(log SYSTEM)
+if(ANDROID)
+   sbis_add_sdk_dependency("iconv")
+   sbis_add_sdk_dependency("openssl")
+   sbis_use_library(log SYSTEM)
+elseif(IOS)
+   sbis_add_sdk_dependency(ssl)
+   sbis_add_sdk_dependency(crypto)
+endif()
 sbis_use_library(z SYSTEM)
+
+if(ANDROID)
+   set(BRIDGES_SOURCES
+       "implementation/bridges/NativeSnakeModel.cpp"
+       "implementation/bridges/NativePoint.cpp"
+       "implementation/bridges/NativeGame.cpp"
+       "implementation/bridges/NativeWalls.cpp"
+       "implementation/bridges/NativeField.cpp")
+endif()
 
 sbis_set_sources(
    "implementation/client_game_room.cpp"
-   "implementation/bridges/NativeSnakeModel.cpp"
-   "implementation/bridges/NativePoint.cpp"
-   "implementation/bridges/NativeGame.cpp"
-   "implementation/bridges/NativeWalls.cpp"
-   "implementation/bridges/NativeField.cpp"
    "implementation/game.cpp"
+   ${BRIDGES_SOURCES}
 )
 
 sbis_set_headers(

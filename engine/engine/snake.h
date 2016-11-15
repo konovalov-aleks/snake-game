@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <sbis-lib/serialization/serialization.hpp>
 #include "vector2d.h"
 
