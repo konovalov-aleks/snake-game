@@ -4,5 +4,5 @@
 field = record {
 	walls: walls;
 	snakes: list<snake_model>;
-	my_snake: snake_model;
+	my_snake: optional<snake_model>;
 }

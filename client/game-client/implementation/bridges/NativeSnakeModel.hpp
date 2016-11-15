@@ -25,8 +25,10 @@ private:
     friend ::djinni::JniClass<NativeSnakeModel>;
 
     const ::djinni::GlobalRef<jclass> clazz { ::djinni::jniFindClass("ru/tensor/generated/SnakeModel") };
-    const jmethodID jconstructor { ::djinni::jniGetMethodID(clazz.get(), "<init>", "(Ljava/util/ArrayList;)V") };
+    const jmethodID jconstructor { ::djinni::jniGetMethodID(clazz.get(), "<init>", "(Ljava/util/ArrayList;Lru/tensor/generated/VectorModel;Lru/tensor/generated/VectorModel;)V") };
     const jfieldID field_mPoints { ::djinni::jniGetFieldID(clazz.get(), "mPoints", "Ljava/util/ArrayList;") };
+    const jfieldID field_mLeftEye { ::djinni::jniGetFieldID(clazz.get(), "mLeftEye", "Lru/tensor/generated/VectorModel;") };
+    const jfieldID field_mRightEye { ::djinni::jniGetFieldID(clazz.get(), "mRightEye", "Lru/tensor/generated/VectorModel;") };
 };
 
 }  // namespace djinni_generated

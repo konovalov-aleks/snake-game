@@ -8,6 +8,8 @@ COMMON_FLAGS := \
 	--ident-cpp-method FooBar \
 	--cpp-use-wide-strings true \
 	--cpp-out $(BUILD_DIR)/implementation/generated/ \
+	--cpp-optional-header '<boost/optional.hpp>' \
+	--cpp-optional-template 'boost::optional' \
 	--idl all.djinni \
 	--list-in-files ./all.djinni.inlist
 

@@ -29,7 +29,7 @@ public:
 
 private:
    boost::uuids::uuid mId;
-   Point mLastHeadPos;
+   Vector2D mLastHeadPos;
 };
 
 GameImpl::GameImpl() : mLastHeadPos{ 30, 30 }
@@ -58,25 +58,48 @@ Field GameImpl::GetField()
    auto players = ClientGameRoom::Instance().Players();
    std::vector<SnakeModel> res_snakes;
    res_snakes.reserve( players.size() );
-   SnakeModel cur_snake( ( std::vector<Point>() ) );
+   boost::optional< SnakeModel > cur_snake;
    for( const auto& player : players )
    {
       const auto& player_points = player.second.Points();
-      std::vector<Point> points;
+      if( player_points.empty() )
+      {
+         ErrorMsg( L"snake without body!" );
+         continue;
+      }
+      std::vector<VectorModel> points;
       points.reserve( player_points.size() );
       for( const auto& p : player_points )
-         points.push_back( Point( static_cast<int32_t>( p.getX() ),
-                                  static_cast<int32_t>( p.getY() ) ) );
-      SnakeModel snake( std::move( points ) );
-      if( player.first == mId )
+         points.push_back( VectorModel( p.getX(), p.getY() ) );
+
+      Vector2D head = player_points[ 0 ];
+
+      const bool is_my_snake = player.first == mId;
+      if( is_my_snake )
+      {
+         // сглаживаем траекторию движения головы для своей змеи, чтобы не дергался экран
+         head = Vector2D( ( head.getX() + mLastHeadPos.getX() * 2.0 ) / 3.0,
+                          ( head.getY() + mLastHeadPos.getY() * 2.0 ) / 3.0 );
+         mLastHeadPos = head;
+         points[0].x = head.getX();
+         points[0].y = head.getY();
+      }
+
+      Vector2D dir( 1, 0 );
+      if( player_points.size() > 1 )
+         dir = Vector2D( head.getX() - player_points[1].getX(),
+                         head.getY() - player_points[1].getY() );
+      dir.normalize();
+      dir *= 5;
+
+      VectorModel left_eye( head.getX() - dir.getY(), head.getY() + dir.getX() );
+      VectorModel right_eye( head.getX() + dir.getY(), head.getY() - dir.getX() );
+      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ) );
+      if( is_my_snake )
          cur_snake = std::move( snake );
       else
          res_snakes.push_back( std::move( snake ) );
    }
-   Point& head = cur_snake.points.front();
-   head.x = (head.x + mLastHeadPos.x * 2) / 3;
-   head.y = (head.y + mLastHeadPos.y * 2) / 3;
-   mLastHeadPos = head;
    return Field( Walls( 0, 0, 0, 0 ), std::move( res_snakes ), std::move( cur_snake ) );
 }
 

@@ -5,17 +5,18 @@
 
 #include "snake_model.hpp"
 #include "walls.hpp"
+#include <boost/optional.hpp>
 #include <utility>
 #include <vector>
 
 struct Field final {
     Walls walls;
     std::vector<SnakeModel> snakes;
-    SnakeModel my_snake;
+    boost::optional<SnakeModel> my_snake;
 
     Field(Walls walls_,
           std::vector<SnakeModel> snakes_,
-          SnakeModel my_snake_)
+          boost::optional<SnakeModel> my_snake_)
     : walls(std::move(walls_))
     , snakes(std::move(snakes_))
     , my_snake(std::move(my_snake_))
