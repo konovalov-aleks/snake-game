@@ -29,7 +29,6 @@ void ServerGameRoom::GameLoopThreadFunc()
    }
 }
 
-
 boost::uuids::uuid ServerGameRoom::DoEnter()
 {
    return GenerateUUIDRandomDevice();

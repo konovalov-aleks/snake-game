@@ -16,6 +16,11 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 
@@ -24,7 +29,6 @@ import ru.tensor.sbis.core.Initializer;
 import ru.tensor.snake.game.R;
 import ru.tensor.generated.Field;
 import ru.tensor.generated.Game;
-import ru.tensor.generated.Point;
 import ru.tensor.generated.SnakeModel;
 
 public class MainActivity extends Activity {
@@ -33,7 +37,23 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Initializer.init(this, "snake-game");
-        setContentView(new DrawView(this));
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        FrameLayout game = new FrameLayout(this);
+
+        final RelativeLayout mainMenu = (RelativeLayout)View.inflate(this, R.layout.main_menu, null);
+        Button startBtn = (Button)mainMenu.findViewById(R.id.start_button);
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Game.instance().enter();
+                mainMenu.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        game.addView(new DrawView(this));
+        game.addView(mainMenu);
+        setContentView(game);
     }
 
     class DrawView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
@@ -150,6 +170,10 @@ public class MainActivity extends Activity {
                 drawEye(canvas, snake.getRightEye());
             }
 
+            private void drawBonus(Canvas canvas, VectorModel position) {
+                canvas.drawCircle(position.getX(), position.getY(), 15, WHITE_PAINT);
+            }
+
             Bitmap backgroundImage = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 
             void drawBackground(Canvas canvas, VectorModel startPoint) {
@@ -163,7 +187,6 @@ public class MainActivity extends Activity {
             @Override
             public void run() {
                 Canvas canvas;
-                Game.instance().enter();;
                 Paint paint = new Paint() {
                     {
                         setStyle(Paint.Style.STROKE);
@@ -199,21 +222,26 @@ public class MainActivity extends Activity {
                         if (canvas == null)
                             continue;
 
-                        VectorModel mySnakeHead = fld.getMySnake().getPoints().get(0);
-
-                        drawBackground(canvas, mySnakeHead);
+                        VectorModel center = fld.getDisplayCenter();
+                        drawBackground(canvas, center);
                         canvas.drawText(String.valueOf(rps), 10, 10, rps_paint);
 
-                        matrix.setTranslate(canvas.getWidth() / 2 - mySnakeHead.getX(),
-                                canvas.getHeight() / 2 - mySnakeHead.getY());
+                        matrix.setTranslate(canvas.getWidth() / 2 - center.getX(),
+                                canvas.getHeight() / 2 - center.getY());
                         canvas.setMatrix(matrix);
 
+                        // рисуем змей
                         SnakeModel my_snake = fld.getMySnake();
                         if(my_snake != null)
                             drawSnake(canvas, cur_pl_paint, my_snake);
                         ArrayList<SnakeModel> snakes = fld.getSnakes();
                         for(SnakeModel snake : snakes)
                             drawSnake(canvas, paint, snake);
+
+                        // рисуем бонусы
+                        ArrayList<VectorModel> bonuses = fld.getBonuses();
+                        for(VectorModel b : bonuses)
+                            drawBonus(canvas, b);
                     } finally {
                         if (canvas != null) {
                             surfaceHolder.unlockCanvasAndPost(canvas);
