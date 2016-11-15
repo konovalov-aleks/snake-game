@@ -27,7 +27,7 @@ void Snake::Move( int dt )
       else
       {
          Vector2D delta( next->getX() - iter->getX(), next->getY() - iter->getY() );
-         delta *= 4 * dt / 1000.0;
+         delta *= 2 * dt / 1000.0;
          *iter += delta;
       }
    }
