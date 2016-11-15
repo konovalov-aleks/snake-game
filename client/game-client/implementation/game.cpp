@@ -34,7 +34,7 @@ private:
 
 GameImpl::GameImpl() : mLastHeadPos{ 30, 30 }
 {
-   Config::Instance().Set( L"gameserver.Адрес", L"http://10.76.173.249:20082" );
+   Config::Instance().Set( L"gameserver.Адрес", L"http://10.76.174.14:20082" );
    Config::Instance().Set( L"Ядро.Логирование.Уровень", L"Отладочный" );
 }
 
