@@ -15,14 +15,17 @@ struct Field final {
     VectorModel display_center;
     std::vector<SnakeModel> snakes;
     boost::optional<SnakeModel> my_snake;
+    std::vector<VectorModel> bonuses;
 
     Field(Walls walls_,
           VectorModel display_center_,
           std::vector<SnakeModel> snakes_,
-          boost::optional<SnakeModel> my_snake_)
+          boost::optional<SnakeModel> my_snake_,
+          std::vector<VectorModel> bonuses_)
     : walls(std::move(walls_))
     , display_center(std::move(display_center_))
     , snakes(std::move(snakes_))
     , my_snake(std::move(my_snake_))
+    , bonuses(std::move(bonuses_))
     {}
 };

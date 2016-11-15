@@ -170,6 +170,10 @@ public class MainActivity extends Activity {
                 drawEye(canvas, snake.getRightEye());
             }
 
+            private void drawBonus(Canvas canvas, VectorModel position) {
+                canvas.drawCircle(position.getX(), position.getY(), 15, WHITE_PAINT);
+            }
+
             Bitmap backgroundImage = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 
             void drawBackground(Canvas canvas, VectorModel startPoint) {
@@ -226,12 +230,18 @@ public class MainActivity extends Activity {
                                 canvas.getHeight() / 2 - center.getY());
                         canvas.setMatrix(matrix);
 
+                        // рисуем змей
                         SnakeModel my_snake = fld.getMySnake();
                         if(my_snake != null)
                             drawSnake(canvas, cur_pl_paint, my_snake);
                         ArrayList<SnakeModel> snakes = fld.getSnakes();
                         for(SnakeModel snake : snakes)
                             drawSnake(canvas, paint, snake);
+
+                        // рисуем бонусы
+                        ArrayList<VectorModel> bonuses = fld.getBonuses();
+                        for(VectorModel b : bonuses)
+                            drawBonus(canvas, b);
                     } finally {
                         if (canvas != null) {
                             surfaceHolder.unlockCanvasAndPost(canvas);

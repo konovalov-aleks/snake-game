@@ -16,15 +16,19 @@ public final class Field {
 
     /*package*/ final SnakeModel mMySnake;
 
+    /*package*/ final ArrayList<VectorModel> mBonuses;
+
     public Field(
             Walls walls,
             VectorModel displayCenter,
             ArrayList<SnakeModel> snakes,
-            SnakeModel mySnake) {
+            SnakeModel mySnake,
+            ArrayList<VectorModel> bonuses) {
         this.mWalls = walls;
         this.mDisplayCenter = displayCenter;
         this.mSnakes = snakes;
         this.mMySnake = mySnake;
+        this.mBonuses = bonuses;
     }
 
     public Walls getWalls() {
@@ -43,6 +47,10 @@ public final class Field {
         return mMySnake;
     }
 
+    public ArrayList<VectorModel> getBonuses() {
+        return mBonuses;
+    }
+
     @Override
     public String toString() {
         return "Field{" +
@@ -50,6 +58,7 @@ public final class Field {
                 "," + "mDisplayCenter=" + mDisplayCenter +
                 "," + "mSnakes=" + mSnakes +
                 "," + "mMySnake=" + mMySnake +
+                "," + "mBonuses=" + mBonuses +
         "}";
     }
 

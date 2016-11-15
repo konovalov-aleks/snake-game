@@ -44,9 +44,14 @@ void GameRoom::Run( int dt )
          killed_snakes.push_back( it );
          LogMsg( L"snake killed" );
       }
+      else
+         EatBonuses( it->second, head_pos );
    }
    for( auto& it : killed_snakes )
+   {
+      OnSnakeKilled( it->second );
       mPlayers.erase( it );
+   }
 }
 
 namespace
@@ -92,23 +97,52 @@ bool GameRoom::CheckCollisions( const Snake& snake, const Vector2D& old_head_pos
    return false;
 }
 
+void GameRoom::OnSnakeKilled( const Snake& /*snake*/ )
+{
+   // TODO создать бонусы
+}
+
+void GameRoom::EatBonuses( const Snake& /*snake*/, const Vector2D& /*old_head_pos*/ )
+{
+   // TODO найти бонусы, которые съела змея за данный такт, убрать их с поля и увеличить змею
+}
+
 boost::unordered_map<boost::uuids::uuid, Snake> GameRoom::Players() const
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
    return mPlayers;
 }
 
+void GameRoom::SetPlayers( boost::unordered_map<boost::uuids::uuid, Snake> players )
+{
+   boost::unique_lock<boost::mutex> lock( mPlayersMtx );
+   mPlayers = std::move( players );
+}
+
+std::vector<Bonus> GameRoom::Bonuses() const
+{
+   boost::unique_lock<boost::mutex> lock( mBonusesMtx );
+   return mBonuses;
+}
+
+void GameRoom::SetBonuses( std::vector<Bonus> bonuses )
+{
+   boost::unique_lock<boost::mutex> lock( mBonusesMtx );
+   mBonuses = std::move( bonuses );
+}
+
 GameState GameRoom::State()
 {
    GameState res;
    res.players = Players();
+   res.bonuses = Bonuses();
    return res;
 }
 
-void GameRoom::SetState( const GameState& state )
+void GameRoom::SetState( GameState state )
 {
-   boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   mPlayers = state.players;
+   SetPlayers( std::move( state.players ) );
+   SetBonuses( std::move( state.bonuses ) );
 }
 
 } // namespace game

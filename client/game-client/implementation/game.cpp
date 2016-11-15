@@ -118,7 +118,15 @@ Field GameImpl::GetField()
       world_center.x /= res_snakes.size();
       world_center.y /= res_snakes.size();
    }
-   return Field( Walls( 0, 0, 0, 0 ), std::move( world_center ), std::move( res_snakes ), std::move( cur_snake ) );
+
+   const auto& bonuses = ClientGameRoom::Instance().Bonuses();
+   std::vector<VectorModel> field_bonuses;
+   field_bonuses.reserve( bonuses.size() );
+   for( const auto& b : bonuses )
+      field_bonuses.push_back( VectorModel( b.Position().getX(), b.Position().getY() ) );
+
+   return Field( Walls( 0, 0, 0, 0 ), std::move( world_center ), std::move( res_snakes ),
+                 std::move( cur_snake ), std::move( field_bonuses ) );
 }
 
 } // namespace
