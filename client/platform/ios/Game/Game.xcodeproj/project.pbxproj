@@ -1,0 +1,555 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7243DBB41DDAF05D00E14DFD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7243DBB31DDAF05D00E14DFD /* AppDelegate.swift */; };
+		7243DBB61DDAF05D00E14DFD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7243DBB51DDAF05D00E14DFD /* ViewController.swift */; };
+		7243DBB91DDAF05D00E14DFD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7243DBB71DDAF05D00E14DFD /* Main.storyboard */; };
+		7243DBBB1DDAF05D00E14DFD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7243DBBA1DDAF05D00E14DFD /* Assets.xcassets */; };
+		7243DBBE1DDAF05D00E14DFD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7243DBBC1DDAF05D00E14DFD /* LaunchScreen.storyboard */; };
+		7243DBC71DDB0A6700E14DFD /* libengine.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DBC61DDB0A6700E14DFD /* libengine.a */; };
+		7243DBC91DDB0A7200E14DFD /* libsnake-game.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DBC81DDB0A7200E14DFD /* libsnake-game.a */; };
+		7243DBCB1DDB0A7A00E14DFD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DBCA1DDB0A7A00E14DFD /* libz.tbd */; };
+		7243DBCD1DDB0A8D00E14DFD /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DBCC1DDB0A8D00E14DFD /* libiconv.tbd */; };
+		7243DBFF1DDB0C9B00E14DFD /* DJIError.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DBFB1DDB0C9B00E14DFD /* DJIError.mm */; };
+		7243DC001DDB0C9B00E14DFD /* DJIProxyCaches.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DBFE1DDB0C9B00E14DFD /* DJIProxyCaches.mm */; };
+		7243DC0E1DDB1FB800E14DFD /* SDField.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC041DDB1FB800E14DFD /* SDField.mm */; };
+		7243DC101DDB1FB800E14DFD /* SDSnakeModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC091DDB1FB800E14DFD /* SDSnakeModel.mm */; };
+		7243DC111DDB1FB800E14DFD /* SDVectorModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC0B1DDB1FB800E14DFD /* SDVectorModel.mm */; };
+		7243DC121DDB1FB800E14DFD /* SDWalls.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC0D1DDB1FB800E14DFD /* SDWalls.mm */; };
+		7243DC201DDB1FCA00E14DFD /* SDField+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC151DDB1FCA00E14DFD /* SDField+Private.mm */; };
+		7243DC211DDB1FCA00E14DFD /* SDGame+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC171DDB1FCA00E14DFD /* SDGame+Private.mm */; };
+		7243DC231DDB1FCA00E14DFD /* SDSnakeModel+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC1B1DDB1FCA00E14DFD /* SDSnakeModel+Private.mm */; };
+		7243DC241DDB1FCA00E14DFD /* SDVectorModel+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC1D1DDB1FCA00E14DFD /* SDVectorModel+Private.mm */; };
+		7243DC251DDB1FCA00E14DFD /* SDWalls+Private.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7243DC1F1DDB1FCA00E14DFD /* SDWalls+Private.mm */; };
+		7243DC301DDB225E00E14DFD /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC261DDB225E00E14DFD /* libcrypto.a */; };
+		7243DC311DDB225E00E14DFD /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC271DDB225E00E14DFD /* libcurl.a */; };
+		7243DC321DDB225E00E14DFD /* libsbis-bl-core300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC281DDB225E00E14DFD /* libsbis-bl-core300.a */; };
+		7243DC331DDB225E00E14DFD /* libsbis-bl-metadata-basic300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC291DDB225E00E14DFD /* libsbis-bl-metadata-basic300.a */; };
+		7243DC341DDB225E00E14DFD /* libsbis-communication300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC2A1DDB225E00E14DFD /* libsbis-communication300.a */; };
+		7243DC351DDB225E00E14DFD /* libsbis-lib300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC2B1DDB225E00E14DFD /* libsbis-lib300.a */; };
+		7243DC361DDB225E00E14DFD /* libsbis-loader300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC2C1DDB225E00E14DFD /* libsbis-loader300.a */; };
+		7243DC371DDB225E00E14DFD /* libsbis-rpc-client300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC2D1DDB225E00E14DFD /* libsbis-rpc-client300.a */; };
+		7243DC381DDB225E00E14DFD /* libsbis-rpc300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC2E1DDB225E00E14DFD /* libsbis-rpc300.a */; };
+		7243DC391DDB225E00E14DFD /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC2F1DDB225E00E14DFD /* libssl.a */; };
+		7243DC3B1DDB22BB00E14DFD /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC3A1DDB22BB00E14DFD /* libboost.a */; };
+		7243DC3D1DDB233200E14DFD /* libsbis-xml300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC3C1DDB233200E14DFD /* libsbis-xml300.a */; };
+		7290FABF1DDB2C4E002835DB /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 7290FABE1DDB2C4E002835DB /* SwiftTryCatch.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7243DBB01DDAF05D00E14DFD /* Game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Game.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7243DBB31DDAF05D00E14DFD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7243DBB51DDAF05D00E14DFD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		7243DBB81DDAF05D00E14DFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		7243DBBA1DDAF05D00E14DFD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7243DBBD1DDAF05D00E14DFD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		7243DBBF1DDAF05D00E14DFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7243DBC61DDB0A6700E14DFD /* libengine.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libengine.a; path = "../../../game-client/build_universal/bin/libengine.a"; sourceTree = "<group>"; };
+		7243DBC81DDB0A7200E14DFD /* libsnake-game.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsnake-game.a"; path = "../../../game-client/build_universal/bin/libsnake-game.a"; sourceTree = "<group>"; };
+		7243DBCA1DDB0A7A00E14DFD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		7243DBCC1DDB0A8D00E14DFD /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		7243DBD11DDB0B1A00E14DFD /* Game-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Game-Bridging-Header.h"; sourceTree = "<group>"; };
+		7243DBEF1DDB0C4B00E14DFD /* field.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = field.hpp; path = "Generated/C++Headers/field.hpp"; sourceTree = "<group>"; };
+		7243DBF01DDB0C4B00E14DFD /* game.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = game.hpp; path = "Generated/C++Headers/game.hpp"; sourceTree = "<group>"; };
+		7243DBF21DDB0C4B00E14DFD /* snake_model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = snake_model.hpp; path = "Generated/C++Headers/snake_model.hpp"; sourceTree = "<group>"; };
+		7243DBF31DDB0C4B00E14DFD /* walls.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = walls.hpp; path = "Generated/C++Headers/walls.hpp"; sourceTree = "<group>"; };
+		7243DBF51DDB0C8E00E14DFD /* djinni_common.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = djinni_common.hpp; path = DjinniSupportLib/djinni_common.hpp; sourceTree = "<group>"; };
+		7243DBF61DDB0C8E00E14DFD /* proxy_cache_impl.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = proxy_cache_impl.hpp; path = DjinniSupportLib/proxy_cache_impl.hpp; sourceTree = "<group>"; };
+		7243DBF71DDB0C8E00E14DFD /* proxy_cache_interface.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = proxy_cache_interface.hpp; path = DjinniSupportLib/proxy_cache_interface.hpp; sourceTree = "<group>"; };
+		7243DBF91DDB0C9B00E14DFD /* DJICppWrapperCache+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DJICppWrapperCache+Private.h"; path = "DjinniSupportLib/objc/DJICppWrapperCache+Private.h"; sourceTree = "<group>"; };
+		7243DBFA1DDB0C9B00E14DFD /* DJIError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DJIError.h; path = DjinniSupportLib/objc/DJIError.h; sourceTree = "<group>"; };
+		7243DBFB1DDB0C9B00E14DFD /* DJIError.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DJIError.mm; path = DjinniSupportLib/objc/DJIError.mm; sourceTree = "<group>"; };
+		7243DBFC1DDB0C9B00E14DFD /* DJIMarshal+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DJIMarshal+Private.h"; path = "DjinniSupportLib/objc/DJIMarshal+Private.h"; sourceTree = "<group>"; };
+		7243DBFD1DDB0C9B00E14DFD /* DJIObjcWrapperCache+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "DJIObjcWrapperCache+Private.h"; path = "DjinniSupportLib/objc/DJIObjcWrapperCache+Private.h"; sourceTree = "<group>"; };
+		7243DBFE1DDB0C9B00E14DFD /* DJIProxyCaches.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DJIProxyCaches.mm; path = DjinniSupportLib/objc/DJIProxyCaches.mm; sourceTree = "<group>"; };
+		7243DC011DDB1FA400E14DFD /* vector_model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_model.hpp; path = "Generated/C++Headers/vector_model.hpp"; sourceTree = "<group>"; };
+		7243DC031DDB1FB800E14DFD /* SDField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDField.h; path = Generated/ObjC/SDField.h; sourceTree = "<group>"; };
+		7243DC041DDB1FB800E14DFD /* SDField.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SDField.mm; path = Generated/ObjC/SDField.mm; sourceTree = "<group>"; };
+		7243DC051DDB1FB800E14DFD /* SDGame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDGame.h; path = Generated/ObjC/SDGame.h; sourceTree = "<group>"; };
+		7243DC081DDB1FB800E14DFD /* SDSnakeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDSnakeModel.h; path = Generated/ObjC/SDSnakeModel.h; sourceTree = "<group>"; };
+		7243DC091DDB1FB800E14DFD /* SDSnakeModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SDSnakeModel.mm; path = Generated/ObjC/SDSnakeModel.mm; sourceTree = "<group>"; };
+		7243DC0A1DDB1FB800E14DFD /* SDVectorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDVectorModel.h; path = Generated/ObjC/SDVectorModel.h; sourceTree = "<group>"; };
+		7243DC0B1DDB1FB800E14DFD /* SDVectorModel.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SDVectorModel.mm; path = Generated/ObjC/SDVectorModel.mm; sourceTree = "<group>"; };
+		7243DC0C1DDB1FB800E14DFD /* SDWalls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SDWalls.h; path = Generated/ObjC/SDWalls.h; sourceTree = "<group>"; };
+		7243DC0D1DDB1FB800E14DFD /* SDWalls.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SDWalls.mm; path = Generated/ObjC/SDWalls.mm; sourceTree = "<group>"; };
+		7243DC141DDB1FCA00E14DFD /* SDField+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SDField+Private.h"; path = "Generated/ObjCppBridges/SDField+Private.h"; sourceTree = "<group>"; };
+		7243DC151DDB1FCA00E14DFD /* SDField+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "SDField+Private.mm"; path = "Generated/ObjCppBridges/SDField+Private.mm"; sourceTree = "<group>"; };
+		7243DC161DDB1FCA00E14DFD /* SDGame+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SDGame+Private.h"; path = "Generated/ObjCppBridges/SDGame+Private.h"; sourceTree = "<group>"; };
+		7243DC171DDB1FCA00E14DFD /* SDGame+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "SDGame+Private.mm"; path = "Generated/ObjCppBridges/SDGame+Private.mm"; sourceTree = "<group>"; };
+		7243DC1A1DDB1FCA00E14DFD /* SDSnakeModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SDSnakeModel+Private.h"; path = "Generated/ObjCppBridges/SDSnakeModel+Private.h"; sourceTree = "<group>"; };
+		7243DC1B1DDB1FCA00E14DFD /* SDSnakeModel+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "SDSnakeModel+Private.mm"; path = "Generated/ObjCppBridges/SDSnakeModel+Private.mm"; sourceTree = "<group>"; };
+		7243DC1C1DDB1FCA00E14DFD /* SDVectorModel+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SDVectorModel+Private.h"; path = "Generated/ObjCppBridges/SDVectorModel+Private.h"; sourceTree = "<group>"; };
+		7243DC1D1DDB1FCA00E14DFD /* SDVectorModel+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "SDVectorModel+Private.mm"; path = "Generated/ObjCppBridges/SDVectorModel+Private.mm"; sourceTree = "<group>"; };
+		7243DC1E1DDB1FCA00E14DFD /* SDWalls+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "SDWalls+Private.h"; path = "Generated/ObjCppBridges/SDWalls+Private.h"; sourceTree = "<group>"; };
+		7243DC1F1DDB1FCA00E14DFD /* SDWalls+Private.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "SDWalls+Private.mm"; path = "Generated/ObjCppBridges/SDWalls+Private.mm"; sourceTree = "<group>"; };
+		7243DC261DDB225E00E14DFD /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libcrypto.a"; sourceTree = "<group>"; };
+		7243DC271DDB225E00E14DFD /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libcurl.a"; sourceTree = "<group>"; };
+		7243DC281DDB225E00E14DFD /* libsbis-bl-core300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-bl-core300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-bl-core300.a"; sourceTree = "<group>"; };
+		7243DC291DDB225E00E14DFD /* libsbis-bl-metadata-basic300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-bl-metadata-basic300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-bl-metadata-basic300.a"; sourceTree = "<group>"; };
+		7243DC2A1DDB225E00E14DFD /* libsbis-communication300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-communication300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-communication300.a"; sourceTree = "<group>"; };
+		7243DC2B1DDB225E00E14DFD /* libsbis-lib300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-lib300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-lib300.a"; sourceTree = "<group>"; };
+		7243DC2C1DDB225E00E14DFD /* libsbis-loader300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-loader300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-loader300.a"; sourceTree = "<group>"; };
+		7243DC2D1DDB225E00E14DFD /* libsbis-rpc-client300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-rpc-client300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-rpc-client300.a"; sourceTree = "<group>"; };
+		7243DC2E1DDB225E00E14DFD /* libsbis-rpc300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-rpc300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-rpc300.a"; sourceTree = "<group>"; };
+		7243DC2F1DDB225E00E14DFD /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libssl.a"; sourceTree = "<group>"; };
+		7243DC3A1DDB22BB00E14DFD /* libboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost.a; path = ../../../../../../BoostExperiments_FatFramework/libs/boost/ios/libboost.a; sourceTree = "<group>"; };
+		7243DC3C1DDB233200E14DFD /* libsbis-xml300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-xml300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-xml300.a"; sourceTree = "<group>"; };
+		7290FABD1DDB2C4E002835DB /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftTryCatch.h; path = Game/SwiftTryCatch/SwiftTryCatch.h; sourceTree = "<group>"; };
+		7290FABE1DDB2C4E002835DB /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiftTryCatch.m; path = Game/SwiftTryCatch/SwiftTryCatch.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7243DBAD1DDAF05D00E14DFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7243DC301DDB225E00E14DFD /* libcrypto.a in Frameworks */,
+				7243DC311DDB225E00E14DFD /* libcurl.a in Frameworks */,
+				7243DC321DDB225E00E14DFD /* libsbis-bl-core300.a in Frameworks */,
+				7243DC331DDB225E00E14DFD /* libsbis-bl-metadata-basic300.a in Frameworks */,
+				7243DC341DDB225E00E14DFD /* libsbis-communication300.a in Frameworks */,
+				7243DC361DDB225E00E14DFD /* libsbis-loader300.a in Frameworks */,
+				7243DC371DDB225E00E14DFD /* libsbis-rpc-client300.a in Frameworks */,
+				7243DC381DDB225E00E14DFD /* libsbis-rpc300.a in Frameworks */,
+				7243DC3D1DDB233200E14DFD /* libsbis-xml300.a in Frameworks */,
+				7243DC351DDB225E00E14DFD /* libsbis-lib300.a in Frameworks */,
+				7243DC391DDB225E00E14DFD /* libssl.a in Frameworks */,
+				7243DBCD1DDB0A8D00E14DFD /* libiconv.tbd in Frameworks */,
+				7243DBCB1DDB0A7A00E14DFD /* libz.tbd in Frameworks */,
+				7243DBC91DDB0A7200E14DFD /* libsnake-game.a in Frameworks */,
+				7243DBC71DDB0A6700E14DFD /* libengine.a in Frameworks */,
+				7243DC3B1DDB22BB00E14DFD /* libboost.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7243DBA71DDAF05D00E14DFD = {
+			isa = PBXGroup;
+			children = (
+				7243DBB21DDAF05D00E14DFD /* Game */,
+				7243DBB11DDAF05D00E14DFD /* Products */,
+				7243DBC51DDB0A6700E14DFD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		7243DBB11DDAF05D00E14DFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7243DBB01DDAF05D00E14DFD /* Game.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7243DBB21DDAF05D00E14DFD /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				7290FABC1DDB2BDC002835DB /* SwiftTryCatch */,
+				7243DBF41DDB0C5300E14DFD /* DjinniSupportLib */,
+				7243DBCE1DDB0A9C00E14DFD /* Generated */,
+				7243DBB31DDAF05D00E14DFD /* AppDelegate.swift */,
+				7243DBB51DDAF05D00E14DFD /* ViewController.swift */,
+				7243DBB71DDAF05D00E14DFD /* Main.storyboard */,
+				7243DBBA1DDAF05D00E14DFD /* Assets.xcassets */,
+				7243DBBC1DDAF05D00E14DFD /* LaunchScreen.storyboard */,
+				7243DBBF1DDAF05D00E14DFD /* Info.plist */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		7243DBC51DDB0A6700E14DFD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7243DC3C1DDB233200E14DFD /* libsbis-xml300.a */,
+				7243DC3A1DDB22BB00E14DFD /* libboost.a */,
+				7243DC261DDB225E00E14DFD /* libcrypto.a */,
+				7243DC271DDB225E00E14DFD /* libcurl.a */,
+				7243DC281DDB225E00E14DFD /* libsbis-bl-core300.a */,
+				7243DC291DDB225E00E14DFD /* libsbis-bl-metadata-basic300.a */,
+				7243DC2A1DDB225E00E14DFD /* libsbis-communication300.a */,
+				7243DC2B1DDB225E00E14DFD /* libsbis-lib300.a */,
+				7243DC2C1DDB225E00E14DFD /* libsbis-loader300.a */,
+				7243DC2D1DDB225E00E14DFD /* libsbis-rpc-client300.a */,
+				7243DC2E1DDB225E00E14DFD /* libsbis-rpc300.a */,
+				7243DC2F1DDB225E00E14DFD /* libssl.a */,
+				7243DBCC1DDB0A8D00E14DFD /* libiconv.tbd */,
+				7243DBCA1DDB0A7A00E14DFD /* libz.tbd */,
+				7243DBC81DDB0A7200E14DFD /* libsnake-game.a */,
+				7243DBC61DDB0A6700E14DFD /* libengine.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7243DBCE1DDB0A9C00E14DFD /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				7243DC131DDB1FBE00E14DFD /* ObjCppBridges */,
+				7243DC021DDB1FA800E14DFD /* ObjC */,
+				7243DBD11DDB0B1A00E14DFD /* Game-Bridging-Header.h */,
+				7243DBEE1DDB0C2A00E14DFD /* C++Headers */,
+			);
+			name = Generated;
+			sourceTree = "<group>";
+		};
+		7243DBEE1DDB0C2A00E14DFD /* C++Headers */ = {
+			isa = PBXGroup;
+			children = (
+				7243DC011DDB1FA400E14DFD /* vector_model.hpp */,
+				7243DBEF1DDB0C4B00E14DFD /* field.hpp */,
+				7243DBF01DDB0C4B00E14DFD /* game.hpp */,
+				7243DBF21DDB0C4B00E14DFD /* snake_model.hpp */,
+				7243DBF31DDB0C4B00E14DFD /* walls.hpp */,
+			);
+			name = "C++Headers";
+			sourceTree = "<group>";
+		};
+		7243DBF41DDB0C5300E14DFD /* DjinniSupportLib */ = {
+			isa = PBXGroup;
+			children = (
+				7243DBF81DDB0C9100E14DFD /* objc */,
+				7243DBF51DDB0C8E00E14DFD /* djinni_common.hpp */,
+				7243DBF61DDB0C8E00E14DFD /* proxy_cache_impl.hpp */,
+				7243DBF71DDB0C8E00E14DFD /* proxy_cache_interface.hpp */,
+			);
+			name = DjinniSupportLib;
+			sourceTree = "<group>";
+		};
+		7243DBF81DDB0C9100E14DFD /* objc */ = {
+			isa = PBXGroup;
+			children = (
+				7243DBF91DDB0C9B00E14DFD /* DJICppWrapperCache+Private.h */,
+				7243DBFA1DDB0C9B00E14DFD /* DJIError.h */,
+				7243DBFB1DDB0C9B00E14DFD /* DJIError.mm */,
+				7243DBFC1DDB0C9B00E14DFD /* DJIMarshal+Private.h */,
+				7243DBFD1DDB0C9B00E14DFD /* DJIObjcWrapperCache+Private.h */,
+				7243DBFE1DDB0C9B00E14DFD /* DJIProxyCaches.mm */,
+			);
+			name = objc;
+			sourceTree = "<group>";
+		};
+		7243DC021DDB1FA800E14DFD /* ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				7243DC031DDB1FB800E14DFD /* SDField.h */,
+				7243DC041DDB1FB800E14DFD /* SDField.mm */,
+				7243DC051DDB1FB800E14DFD /* SDGame.h */,
+				7243DC081DDB1FB800E14DFD /* SDSnakeModel.h */,
+				7243DC091DDB1FB800E14DFD /* SDSnakeModel.mm */,
+				7243DC0A1DDB1FB800E14DFD /* SDVectorModel.h */,
+				7243DC0B1DDB1FB800E14DFD /* SDVectorModel.mm */,
+				7243DC0C1DDB1FB800E14DFD /* SDWalls.h */,
+				7243DC0D1DDB1FB800E14DFD /* SDWalls.mm */,
+			);
+			name = ObjC;
+			sourceTree = "<group>";
+		};
+		7243DC131DDB1FBE00E14DFD /* ObjCppBridges */ = {
+			isa = PBXGroup;
+			children = (
+				7243DC141DDB1FCA00E14DFD /* SDField+Private.h */,
+				7243DC151DDB1FCA00E14DFD /* SDField+Private.mm */,
+				7243DC161DDB1FCA00E14DFD /* SDGame+Private.h */,
+				7243DC171DDB1FCA00E14DFD /* SDGame+Private.mm */,
+				7243DC1A1DDB1FCA00E14DFD /* SDSnakeModel+Private.h */,
+				7243DC1B1DDB1FCA00E14DFD /* SDSnakeModel+Private.mm */,
+				7243DC1C1DDB1FCA00E14DFD /* SDVectorModel+Private.h */,
+				7243DC1D1DDB1FCA00E14DFD /* SDVectorModel+Private.mm */,
+				7243DC1E1DDB1FCA00E14DFD /* SDWalls+Private.h */,
+				7243DC1F1DDB1FCA00E14DFD /* SDWalls+Private.mm */,
+			);
+			name = ObjCppBridges;
+			sourceTree = "<group>";
+		};
+		7290FABC1DDB2BDC002835DB /* SwiftTryCatch */ = {
+			isa = PBXGroup;
+			children = (
+				7290FABD1DDB2C4E002835DB /* SwiftTryCatch.h */,
+				7290FABE1DDB2C4E002835DB /* SwiftTryCatch.m */,
+			);
+			name = SwiftTryCatch;
+			path = ..;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7243DBAF1DDAF05D00E14DFD /* Game */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7243DBC21DDAF05D00E14DFD /* Build configuration list for PBXNativeTarget "Game" */;
+			buildPhases = (
+				7243DBAC1DDAF05D00E14DFD /* Sources */,
+				7243DBAD1DDAF05D00E14DFD /* Frameworks */,
+				7243DBAE1DDAF05D00E14DFD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Game;
+			productName = Game;
+			productReference = 7243DBB01DDAF05D00E14DFD /* Game.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7243DBA81DDAF05D00E14DFD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = Tensor;
+				TargetAttributes = {
+					7243DBAF1DDAF05D00E14DFD = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = WUMC7P4M43;
+						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 7243DBAB1DDAF05D00E14DFD /* Build configuration list for PBXProject "Game" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7243DBA71DDAF05D00E14DFD;
+			productRefGroup = 7243DBB11DDAF05D00E14DFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7243DBAF1DDAF05D00E14DFD /* Game */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7243DBAE1DDAF05D00E14DFD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7243DBBE1DDAF05D00E14DFD /* LaunchScreen.storyboard in Resources */,
+				7243DBBB1DDAF05D00E14DFD /* Assets.xcassets in Resources */,
+				7243DBB91DDAF05D00E14DFD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7243DBAC1DDAF05D00E14DFD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7243DC121DDB1FB800E14DFD /* SDWalls.mm in Sources */,
+				7243DC101DDB1FB800E14DFD /* SDSnakeModel.mm in Sources */,
+				7243DC0E1DDB1FB800E14DFD /* SDField.mm in Sources */,
+				7243DBB61DDAF05D00E14DFD /* ViewController.swift in Sources */,
+				7243DC111DDB1FB800E14DFD /* SDVectorModel.mm in Sources */,
+				7290FABF1DDB2C4E002835DB /* SwiftTryCatch.m in Sources */,
+				7243DC251DDB1FCA00E14DFD /* SDWalls+Private.mm in Sources */,
+				7243DC231DDB1FCA00E14DFD /* SDSnakeModel+Private.mm in Sources */,
+				7243DC001DDB0C9B00E14DFD /* DJIProxyCaches.mm in Sources */,
+				7243DBFF1DDB0C9B00E14DFD /* DJIError.mm in Sources */,
+				7243DC211DDB1FCA00E14DFD /* SDGame+Private.mm in Sources */,
+				7243DC201DDB1FCA00E14DFD /* SDField+Private.mm in Sources */,
+				7243DBB41DDAF05D00E14DFD /* AppDelegate.swift in Sources */,
+				7243DC241DDB1FCA00E14DFD /* SDVectorModel+Private.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7243DBB71DDAF05D00E14DFD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7243DBB81DDAF05D00E14DFD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		7243DBBC1DDAF05D00E14DFD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7243DBBD1DDAF05D00E14DFD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7243DBC01DDAF05D00E14DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7243DBC11DDAF05D00E14DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7243DBC31DDAF05D00E14DFD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = WUMC7P4M43;
+				HEADER_SEARCH_PATHS = "${HOME}/Work/BoostExperiments_FatFramework/build/src/boost_1_61_0";
+				INFOPLIST_FILE = Game/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"${HOME}/Work/Repos/game-my-fork/client/game-client/build_universal/bin",
+					"${SBISPlatformSDK_374220}/bin/ios/universal/clang/release/",
+					"${IOS_BOOST}/../../../libs/boost/ios",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tensor.ru.Game;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Game/Game-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		7243DBC41DDAF05D00E14DFD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = WUMC7P4M43;
+				HEADER_SEARCH_PATHS = "${HOME}/Work/BoostExperiments_FatFramework/build/src/boost_1_61_0";
+				INFOPLIST_FILE = Game/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"${HOME}/Work/Repos/game-my-fork/client/game-client/build_universal/bin",
+					"${SBISPlatformSDK_374220}/bin/ios/universal/clang/release/",
+					"${IOS_BOOST}/../../../libs/boost/ios",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.tensor.ru.Game;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Game/Game-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7243DBAB1DDAF05D00E14DFD /* Build configuration list for PBXProject "Game" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7243DBC01DDAF05D00E14DFD /* Debug */,
+				7243DBC11DDAF05D00E14DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7243DBC21DDAF05D00E14DFD /* Build configuration list for PBXNativeTarget "Game" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7243DBC31DDAF05D00E14DFD /* Debug */,
+				7243DBC41DDAF05D00E14DFD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7243DBA81DDAF05D00E14DFD /* Project object */;
+}
