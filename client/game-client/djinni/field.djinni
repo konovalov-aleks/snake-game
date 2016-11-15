@@ -1,0 +1,8 @@
+@import "snake.djinni"
+@import "walls.djinni"
+
+field = record {
+	walls: walls;
+	snakes: list<snake_model>;
+	my_snake: snake_model;
+}

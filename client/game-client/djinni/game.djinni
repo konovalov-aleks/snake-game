@@ -1,0 +1,10 @@
+@import "field.djinni"
+
+game = interface +c {
+	static instance() : game;
+
+	enter();
+        run();
+	set_direction(dx: i32, dy: i32);
+	get_field(): field;
+}

@@ -1,0 +1,5 @@
+@import "point.djinni"
+
+snake_model = record {
+	points: list<point>;
+}

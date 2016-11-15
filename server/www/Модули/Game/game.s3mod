@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<bl_module bl_module_library="game-server" id="49a10582-7440-11e6-8eda-902b341b546e" name="Game" version="1.00">
+
+  <depends>
+  </depends>
+
+</bl_module>
