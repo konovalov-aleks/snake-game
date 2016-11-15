@@ -1,5 +1,7 @@
-@import "point.djinni"
+@import "vector.djinni"
 
 snake_model = record {
-	points: list<point>;
+	points: list<vector_model>;
+	left_eye: vector_model;
+	right_eye: vector_model;
 }

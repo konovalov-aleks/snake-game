@@ -1,0 +1,4 @@
+vector_model = record {
+	x: f32;
+	y: f32;
+}

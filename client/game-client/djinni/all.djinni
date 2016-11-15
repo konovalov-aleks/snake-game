@@ -1,5 +1,5 @@
 @import "game.djinni"
 @import "snake.djinni"
 @import "field.djinni"
-@import "point.djinni"
+@import "vector.djinni"
 @import "walls.djinni"

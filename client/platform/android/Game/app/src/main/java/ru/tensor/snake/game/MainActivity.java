@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
+import android.graphics.LightingColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -17,6 +19,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import ru.tensor.generated.VectorModel;
 import ru.tensor.sbis.core.Initializer;
 import ru.tensor.snake.game.R;
 import ru.tensor.generated.Field;
@@ -103,30 +106,57 @@ public class MainActivity extends Activity {
                 this.running = running;
             }
 
+            final Paint WHITE_PAINT = new Paint() {
+                {
+                    setStyle(Paint.Style.FILL);
+                    setAntiAlias(true);
+                    setColor(Color.WHITE);
+                }
+            };
+
+            final Paint BLACK_PAINT = new Paint() {
+                {
+                    setStyle(Paint.Style.FILL);
+                    setAntiAlias(true);
+                    setColor(Color.BLACK);
+                }
+            };
+
+            private void drawEye(Canvas canvas, VectorModel pos) {
+                canvas.drawCircle(pos.getX(), pos.getY(), 4, WHITE_PAINT);
+                canvas.drawCircle(pos.getX(), pos.getY(), 2, BLACK_PAINT);
+            }
+
             private void drawSnake(Canvas canvas, Paint paint, SnakeModel snake) {
-                ArrayList<Point> points = snake.getPoints();
+                ArrayList<VectorModel> points = snake.getPoints();
                 if(points.isEmpty())
                     return;
-                Path path = new Path();
 
+                // рисуем тело
+                Path path = new Path();
                 path.moveTo(points.get(0).getX(), points.get(0).getY());
-                for(int i = 1; i < points.size(); ++i) {
-                    Point p1 = points.get(i - 1);
-                    Point p2 = points.get(i);
-                    int dx = p2.getX() - p1.getX();
-                    int dy = p2.getY() - p1.getY();
-                    path.quadTo(p1.getX() + dx / 2, p1.getY() + dy / 2, p2.getX(), p2.getY());
+                for(final VectorModel p : points)
+                    path.lineTo(p.getX(), p.getY());
+
+                for(int i = 0; i < 3; ++i)
+                {
+                    paint.setStrokeWidth(20 - 4 * i);
+                    paint.setColorFilter(new LightingColorFilter(Color.rgb(128 + i * 40, 128 + i * 30, 128 + i * 30), 0));
+                    canvas.drawPath(path, paint);
                 }
-                canvas.drawPath(path, paint);
+
+                // рисуем глаза
+                drawEye(canvas, snake.getLeftEye());
+                drawEye(canvas, snake.getRightEye());
             }
 
             Bitmap backgroundImage = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 
-            void drawBackground(Canvas canvas, Point startPoint) {
-                int w = backgroundImage.getWidth();
-                int h = backgroundImage.getHeight();
-                for(int x = - startPoint.getX() % w - w; x < canvas.getWidth(); x += w)
-                    for(int y = - startPoint.getY() % h - h; y < canvas.getHeight(); y += h)
+            void drawBackground(Canvas canvas, VectorModel startPoint) {
+                float w = backgroundImage.getWidth();
+                float h = backgroundImage.getHeight();
+                for(float x = - startPoint.getX() % w - w; x < canvas.getWidth(); x += w)
+                    for(float y = - startPoint.getY() % h - h; y < canvas.getHeight(); y += h)
                         canvas.drawBitmap(backgroundImage, x, y, null);
             }
 
@@ -141,6 +171,9 @@ public class MainActivity extends Activity {
                         setStrokeWidth(20.0f);
                         setAntiAlias(true);
                         setColor(Color.RED);
+                        setStrokeCap(Paint.Cap.ROUND);
+                        setStrokeJoin(Paint.Join.ROUND);
+                        setPathEffect(new CornerPathEffect(100));
                     }
                 };
                 Paint cur_pl_paint = new Paint(paint);
@@ -166,7 +199,7 @@ public class MainActivity extends Activity {
                         if (canvas == null)
                             continue;
 
-                        Point mySnakeHead = fld.getMySnake().getPoints().get(0);
+                        VectorModel mySnakeHead = fld.getMySnake().getPoints().get(0);
 
                         drawBackground(canvas, mySnakeHead);
                         canvas.drawText(String.valueOf(rps), 10, 10, rps_paint);
@@ -175,7 +208,9 @@ public class MainActivity extends Activity {
                                 canvas.getHeight() / 2 - mySnakeHead.getY());
                         canvas.setMatrix(matrix);
 
-                        drawSnake(canvas, cur_pl_paint, fld.getMySnake());
+                        SnakeModel my_snake = fld.getMySnake();
+                        if(my_snake != null)
+                            drawSnake(canvas, cur_pl_paint, my_snake);
                         ArrayList<SnakeModel> snakes = fld.getSnakes();
                         for(SnakeModel snake : snakes)
                             drawSnake(canvas, paint, snake);

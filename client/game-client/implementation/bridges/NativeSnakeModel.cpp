@@ -3,7 +3,7 @@
 
 #include "NativeSnakeModel.hpp"  // my header
 #include "Marshal.hpp"
-#include "NativePoint.hpp"
+#include "NativeVectorModel.hpp"
 
 namespace djinni_generated {
 
@@ -14,16 +14,20 @@ NativeSnakeModel::~NativeSnakeModel() = default;
 auto NativeSnakeModel::fromCpp(JNIEnv* jniEnv, const CppType& c) -> ::djinni::LocalRef<JniType> {
     const auto& data = ::djinni::JniClass<NativeSnakeModel>::get();
     auto r = ::djinni::LocalRef<JniType>{jniEnv->NewObject(data.clazz.get(), data.jconstructor,
-                                                           ::djinni::get(::djinni::List<::djinni_generated::NativePoint>::fromCpp(jniEnv, c.points)))};
+                                                           ::djinni::get(::djinni::List<::djinni_generated::NativeVectorModel>::fromCpp(jniEnv, c.points)),
+                                                           ::djinni::get(::djinni_generated::NativeVectorModel::fromCpp(jniEnv, c.left_eye)),
+                                                           ::djinni::get(::djinni_generated::NativeVectorModel::fromCpp(jniEnv, c.right_eye)))};
     ::djinni::jniExceptionCheck(jniEnv);
     return r;
 }
 
 auto NativeSnakeModel::toCpp(JNIEnv* jniEnv, JniType j) -> CppType {
-    ::djinni::JniLocalScope jscope(jniEnv, 2);
+    ::djinni::JniLocalScope jscope(jniEnv, 4);
     assert(j != nullptr);
     const auto& data = ::djinni::JniClass<NativeSnakeModel>::get();
-    return {::djinni::List<::djinni_generated::NativePoint>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mPoints))};
+    return {::djinni::List<::djinni_generated::NativeVectorModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mPoints)),
+            ::djinni_generated::NativeVectorModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mLeftEye)),
+            ::djinni_generated::NativeVectorModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mRightEye))};
 }
 
 }  // namespace djinni_generated

@@ -3,14 +3,20 @@
 
 #pragma once
 
-#include "point.hpp"
+#include "vector_model.hpp"
 #include <utility>
 #include <vector>
 
 struct SnakeModel final {
-    std::vector<Point> points;
+    std::vector<VectorModel> points;
+    VectorModel left_eye;
+    VectorModel right_eye;
 
-    SnakeModel(std::vector<Point> points_)
+    SnakeModel(std::vector<VectorModel> points_,
+               VectorModel left_eye_,
+               VectorModel right_eye_)
     : points(std::move(points_))
+    , left_eye(std::move(left_eye_))
+    , right_eye(std::move(right_eye_))
     {}
 };

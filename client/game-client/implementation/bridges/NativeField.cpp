@@ -17,7 +17,7 @@ auto NativeField::fromCpp(JNIEnv* jniEnv, const CppType& c) -> ::djinni::LocalRe
     auto r = ::djinni::LocalRef<JniType>{jniEnv->NewObject(data.clazz.get(), data.jconstructor,
                                                            ::djinni::get(::djinni_generated::NativeWalls::fromCpp(jniEnv, c.walls)),
                                                            ::djinni::get(::djinni::List<::djinni_generated::NativeSnakeModel>::fromCpp(jniEnv, c.snakes)),
-                                                           ::djinni::get(::djinni_generated::NativeSnakeModel::fromCpp(jniEnv, c.my_snake)))};
+                                                           ::djinni::get(::djinni::Optional<boost::optional, ::djinni_generated::NativeSnakeModel>::fromCpp(jniEnv, c.my_snake)))};
     ::djinni::jniExceptionCheck(jniEnv);
     return r;
 }
@@ -28,7 +28,7 @@ auto NativeField::toCpp(JNIEnv* jniEnv, JniType j) -> CppType {
     const auto& data = ::djinni::JniClass<NativeField>::get();
     return {::djinni_generated::NativeWalls::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mWalls)),
             ::djinni::List<::djinni_generated::NativeSnakeModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mSnakes)),
-            ::djinni_generated::NativeSnakeModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mMySnake))};
+            ::djinni::Optional<boost::optional, ::djinni_generated::NativeSnakeModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mMySnake))};
 }
 
 }  // namespace djinni_generated
