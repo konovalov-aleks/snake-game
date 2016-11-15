@@ -28,7 +28,7 @@ public:
    virtual Field GetField() override;
 
 private:
-   boost::uuids::uuid mId;
+   boost::optional<boost::uuids::uuid> mId;
    Vector2D mLastHeadPos;
 };
 
@@ -50,7 +50,8 @@ void GameImpl::Run()
 
 void GameImpl::SetDirection(int32_t dx, int32_t dy)
 {
-   ClientGameRoom::Instance().SetPlayerDirection(mId, Vector2D(dx, dy));
+   if( mId )
+      ClientGameRoom::Instance().SetPlayerDirection( *mId, Vector2D( dx, dy ) );
 }
 
 Field GameImpl::GetField()
@@ -59,6 +60,7 @@ Field GameImpl::GetField()
    std::vector<SnakeModel> res_snakes;
    res_snakes.reserve( players.size() );
    boost::optional< SnakeModel > cur_snake;
+
    for( const auto& player : players )
    {
       const auto& player_points = player.second.Points();
@@ -100,7 +102,23 @@ Field GameImpl::GetField()
       else
          res_snakes.push_back( std::move( snake ) );
    }
-   return Field( Walls( 0, 0, 0, 0 ), std::move( res_snakes ), std::move( cur_snake ) );
+
+   // Пока мы не в игре, будем смотреть в "центр мира" - то есть в центр масс игрового пространства,
+   // иначе - центр экрана позиционируем по положению головы нашей змеи
+   VectorModel world_center( 0, 0 );
+   if( cur_snake )
+      world_center = cur_snake->points[ 0 ];
+   else
+   {
+      for( const SnakeModel& v : res_snakes )
+      {
+         world_center.x += v.points[0].x;
+         world_center.y += v.points[0].y;
+      }
+      world_center.x /= res_snakes.size();
+      world_center.y /= res_snakes.size();
+   }
+   return Field( Walls( 0, 0, 0, 0 ), std::move( world_center ), std::move( res_snakes ), std::move( cur_snake ) );
 }
 
 } // namespace

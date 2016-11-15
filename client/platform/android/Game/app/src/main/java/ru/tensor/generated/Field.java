@@ -10,21 +10,29 @@ public final class Field {
 
     /*package*/ final Walls mWalls;
 
+    /*package*/ final VectorModel mDisplayCenter;
+
     /*package*/ final ArrayList<SnakeModel> mSnakes;
 
     /*package*/ final SnakeModel mMySnake;
 
     public Field(
             Walls walls,
+            VectorModel displayCenter,
             ArrayList<SnakeModel> snakes,
             SnakeModel mySnake) {
         this.mWalls = walls;
+        this.mDisplayCenter = displayCenter;
         this.mSnakes = snakes;
         this.mMySnake = mySnake;
     }
 
     public Walls getWalls() {
         return mWalls;
+    }
+
+    public VectorModel getDisplayCenter() {
+        return mDisplayCenter;
     }
 
     public ArrayList<SnakeModel> getSnakes() {
@@ -39,6 +47,7 @@ public final class Field {
     public String toString() {
         return "Field{" +
                 "mWalls=" + mWalls +
+                "," + "mDisplayCenter=" + mDisplayCenter +
                 "," + "mSnakes=" + mSnakes +
                 "," + "mMySnake=" + mMySnake +
         "}";
