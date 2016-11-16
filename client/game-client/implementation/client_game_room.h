@@ -16,7 +16,7 @@ public:
    void Run();
 
 protected:
-   virtual boost::uuids::uuid DoEnter() override;
+   virtual Snake DoEnter() override;
 
 private:
    ClientGameRoom();

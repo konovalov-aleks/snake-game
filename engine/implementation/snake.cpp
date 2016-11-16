@@ -11,8 +11,9 @@ Snake::Snake()
    : mLinearSpeed()
 {}
 
-Snake::Snake( const Vector2D& pos, double speed, const Vector2D& direction, UInt32 length )
-   : mLinearSpeed( speed ), mPoints( length, pos )
+Snake::Snake( boost::uuids::uuid id, const Vector2D& pos, double speed, const Vector2D& direction,
+              UInt32 length )
+   : mLinearSpeed( speed ), mId( std::move( id ) ), mPoints( length, pos )
 {
    SetDirection( direction );
 }
@@ -27,7 +28,7 @@ void Snake::Move( int dt )
       else
       {
          Vector2D delta( next->getX() - iter->getX(), next->getY() - iter->getY() );
-         delta *= 2 * dt / 1000.0;
+         delta *= dt / 100.0;
          *iter += delta;
       }
    }
@@ -35,7 +36,7 @@ void Snake::Move( int dt )
 
 void Snake::SetDirection( Vector2D direction )
 {
-   direction.normalize();
+   // TODO не давать повернуть слишком резко
    mSpeed = direction * mLinearSpeed;
 }
 
@@ -43,6 +44,7 @@ void Snake::SetDirection( Vector2D direction )
 
 void Serialization<game::Snake>::Read( IObjectReader& reader, game::Snake& snake )
 {
+   ReadValue( *reader[ L"id" ], snake.mId );
    ReadValue( *reader[ L"lspeed" ], snake.mLinearSpeed );
    ReadValue( *reader[ L"speed" ], snake.mSpeed );
    ReadValue( *reader[ L"points" ], snake.mPoints );
@@ -51,6 +53,9 @@ void Serialization<game::Snake>::Read( IObjectReader& reader, game::Snake& snake
 void Serialization<game::Snake>::Write( IObjectWriter& writer, const game::Snake& snake )
 {
    writer.BeginWriteObject();
+   writer.BeginWriteObjectElem( L"id" );
+   WriteValue( writer, snake.mId );
+   writer.EndWriteObjectElem( L"id" );
    writer.BeginWriteObjectElem( L"lspeed" );
    WriteValue( writer, snake.mLinearSpeed );
    writer.EndWriteObjectElem( L"lspeed" );

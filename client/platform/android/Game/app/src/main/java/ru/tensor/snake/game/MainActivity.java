@@ -34,13 +34,14 @@ import ru.tensor.sbis.core.Initializer;
 
 public class MainActivity extends Activity {
 
-    RelativeLayout mainMenu;
+    private RelativeLayout mainMenu;
+    private boolean gameOver = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(savedInstanceState == null)
+        if (savedInstanceState == null)
             Initializer.init(this, "snake-game");
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -52,6 +53,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Game.instance().enter();
+                gameOver = false;
                 mainMenu.setVisibility(View.INVISIBLE);
             }
         });
@@ -64,7 +66,6 @@ public class MainActivity extends Activity {
     class DrawView extends SurfaceView implements SurfaceHolder.Callback, View.OnTouchListener {
 
         private DrawThread drawThread;
-        private boolean mTouchPressed = false;
         private int mTouchX, mTouchY;
 
         public DrawView(Context context) {
@@ -101,25 +102,21 @@ public class MainActivity extends Activity {
 
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_MOVE:
-                case MotionEvent.ACTION_DOWN:
-                    mTouchPressed = true;
-                    mTouchX = (int) motionEvent.getX();
-                    mTouchY = (int) motionEvent.getY();
-                    int dx = mTouchX - view.getWidth() / 2;
-                    int dy = mTouchY - view.getHeight() / 2;
-                    try {
-                        Game.instance().setDirection(dx, dy);
-                    }
-                    catch(Exception ex) {
-                        ex.printStackTrace();
-                    }
-                    return true;
-                case MotionEvent.ACTION_UP:
-                    mTouchPressed = false;
-                    break;
-            }
+            if (!gameOver)
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_MOVE:
+                    case MotionEvent.ACTION_DOWN:
+                        mTouchX = (int) motionEvent.getX();
+                        mTouchY = (int) motionEvent.getY();
+                        int dx = mTouchX - view.getWidth() / 2;
+                        int dy = mTouchY - view.getHeight() / 2;
+                        try {
+                            Game.instance().setDirection(dx, dy);
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                        return true;
+                }
             return false;
         }
 
@@ -260,7 +257,7 @@ public class MainActivity extends Activity {
 
                         SnakeModel my_snake = fld.getMySnake();
 
-                        if( my_snake != null )
+                        if (my_snake != null)
                             cameraPos = my_snake.getPoints().get(0);
                         drawBackground(canvas, cameraPos);
 
@@ -274,13 +271,16 @@ public class MainActivity extends Activity {
                         // рисуем змей
                         if (my_snake != null)
                             drawSnake(canvas, cur_pl_paint, my_snake);
-                        else
+                        else if (!gameOver) {
+                            gameOver = true;
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    mainMenu.setVisibility(View.VISIBLE);
+                                    if (gameOver)
+                                        mainMenu.setVisibility(View.VISIBLE);
                                 }
                             });
+                        }
 
                         ArrayList<SnakeModel> snakes = fld.getSnakes();
                         for (SnakeModel snake : snakes)

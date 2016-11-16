@@ -33,10 +33,10 @@ void ClientGameRoom::Run()
    mLastFrameTime = now;
 }
 
-boost::uuids::uuid ClientGameRoom::DoEnter()
+Snake ClientGameRoom::DoEnter()
 {
    blcore::EndPoint endpoint( L"gameserver" );
-   return blcore::Object( L"GameRoom", endpoint ).Invoke<boost::uuids::uuid>( L"Enter" ); 
+   return blcore::Object( L"GameRoom", endpoint ).Invoke<Snake>( L"Enter" ); 
 }
 
 void ClientGameRoom::FastSync()
@@ -45,9 +45,16 @@ void ClientGameRoom::FastSync()
 
 void ClientGameRoom::FullSync()
 {
-   blcore::EndPoint endpoint( L"gameserver" );
-   SetState( blcore::Object( L"GameRoom", endpoint ).Invoke<GameState>( L"State" ) );
-   mLastFrameTime = boost::posix_time::microsec_clock::universal_time();
+   try
+   {
+      blcore::EndPoint endpoint( L"gameserver" );
+      SetState( blcore::Object( L"GameRoom", endpoint ).Invoke<GameState>( L"State" ) );
+      mLastFrameTime = boost::posix_time::microsec_clock::universal_time();
+   }
+   catch( const Exception& ex )
+   {
+      ErrorMsg( L"Synchronization failed: " + ex.ErrorMessage() );
+   }
 }
 
 void ClientGameRoom::SyncThreadFunc()

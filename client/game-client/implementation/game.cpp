@@ -43,7 +43,9 @@ GameImpl::GameImpl() : mLastHeadPos{ 0, 0 }
 
 void GameImpl::Enter()
 {
-   mId = ClientGameRoom::Instance().Enter();
+   const Snake& snake = ClientGameRoom::Instance().Enter();
+   mLastHeadPos = snake.Points()[ 0 ];
+   mId = snake.ID();
 }
 
 void GameImpl::Run()
@@ -68,9 +70,9 @@ Field GameImpl::GetField()
    res_snakes.reserve( players.size() );
    boost::optional< SnakeModel > cur_snake;
 
-   for( const auto& player : players )
+   for( const Snake& player : players )
    {
-      const auto& player_points = player.second.Points();
+      const auto& player_points = player.Points();
       if( player_points.empty() )
       {
          ErrorMsg( L"snake without body!" );
@@ -83,7 +85,7 @@ Field GameImpl::GetField()
 
       Vector2D head = player_points[ 0 ];
 
-      const bool is_my_snake = player.first == mId;
+      const bool is_my_snake = player.ID() == mId;
       if( is_my_snake )
       {
          // сглаживаем траекторию движения головы для своей змеи, чтобы не дергался экран

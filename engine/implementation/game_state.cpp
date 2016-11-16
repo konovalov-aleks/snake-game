@@ -10,30 +10,22 @@ namespace sbis
 void Serialization<game::GameState>::Read( IObjectReader& reader, game::GameState& state )
 {
    IObjectReaderPtr p = reader[ L"players" ];
-   auto& iter = p->CreateIterator();
-   state.players.clear();
-   for( iter.First(); !iter.IsDone(); iter.Next() )
-   {
-      game::Snake s;
-      ReadValue( *iter.Get(), s );
-      state.players.emplace( FromString<Uuid>( iter.MemberName() ), s );
-   }
+   if( p )
+      ReadValue( *p, state.players );
+   p = reader[ L"bonuses" ];
+   if( p )
+      ReadValue( *p, state.bonuses );
 }
 
 void Serialization<game::GameState>::Write( IObjectWriter& writer, const game::GameState& state )
 {
    writer.BeginWriteObject();
    writer.BeginWriteObjectElem( L"players" );
-   writer.BeginWriteObject();
-   for( const auto& elem : state.players )
-   {
-      String key = UUIDToStringWithoutHyphen( elem.first );
-      writer.BeginWriteObjectElem( key.c_str() );
-      WriteValue( writer, elem.second );
-      writer.EndWriteObjectElem( key.c_str() );
-   }
-   writer.EndWriteObject();
+   WriteValue( writer, state.players );
    writer.EndWriteObjectElem( L"players" );
+   writer.BeginWriteObjectElem( L"bonuses" );
+   WriteValue( writer, state.bonuses );
+   writer.EndWriteObjectElem( L"bonuses" );
    writer.EndWriteObject();
 }
 

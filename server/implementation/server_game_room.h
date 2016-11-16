@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "engine/game_room.h"
 
@@ -15,7 +15,7 @@ public:
 private:
    ServerGameRoom();
 
-   virtual boost::uuids::uuid DoEnter() override;
+   virtual Snake DoEnter() override;
    void GameLoopThreadFunc();
 
    boost::thread mGameThread;

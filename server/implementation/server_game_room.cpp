@@ -1,4 +1,4 @@
-#include "server_game_room.h"
+﻿#include "server_game_room.h"
 
 #include "engine/vector2d.h"
 #include <sbis-lib/types/uuid_generator.hpp>
@@ -29,9 +29,16 @@ void ServerGameRoom::GameLoopThreadFunc()
    }
 }
 
-boost::uuids::uuid ServerGameRoom::DoEnter()
+Snake ServerGameRoom::DoEnter()
 {
-   return GenerateUUIDRandomDevice();
+   // змей будем создавать в центре поля (в прямоугольнике со сторонами = половинам размеров поля),
+   // чтобы при старте сразу не врезаться в стены
+   int world_width = static_cast<int>( WorldDimensions().second.getX() - WorldDimensions().first.getX() );
+   int world_height = static_cast<int>( WorldDimensions().second.getY() - WorldDimensions().first.getY() );
+   Vector2D initial_pos( ( rand() % world_width + WorldDimensions().first.getX() ) / 2,
+                         ( rand() % world_height + WorldDimensions().first.getY() ) / 2 );
+   Vector2D direction( rand() % 100 - 50, rand() % 100 - 50 );
+   return Snake( GenerateUUIDRandomDevice(), std::move( initial_pos ), 20, std::move( direction ), 5 );
 }
 
 RPC_FUNC_2( L"GameRoom.SetPlayerDirection", void, GameRoom_SetPlayerDirection,
@@ -42,7 +49,7 @@ RPC_FUNC_2( L"GameRoom.SetPlayerDirection", void, GameRoom_SetPlayerDirection,
    ServerGameRoom::Instance().SetPlayerDirection( pid, dir );
 }
 
-RPC_FUNC_0( L"GameRoom.Enter", boost::uuids::uuid, GameRoom_Enter )
+RPC_FUNC_0( L"GameRoom.Enter", Snake, GameRoom_Enter )
 {
    result = ServerGameRoom::Instance().Enter();
 }

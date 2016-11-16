@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "vector2d.h"
 
@@ -10,6 +10,7 @@ namespace game
 class Bonus
 {
 public:
+   Bonus() {}
    Bonus( const Vector2D& position ) : mPosition( position ) {}
    const Vector2D& Position() const { return mPosition; }
 
