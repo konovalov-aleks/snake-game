@@ -29,10 +29,16 @@ sbis_use_library(z SYSTEM)
 if(ANDROID)
    set(BRIDGES_SOURCES
        "implementation/bridges/NativeSnakeModel.cpp"
-       "implementation/bridges/NativePoint.cpp"
+       "implementation/bridges/NativeVectorModel.cpp"
        "implementation/bridges/NativeGame.cpp"
        "implementation/bridges/NativeWalls.cpp"
        "implementation/bridges/NativeField.cpp")
+   set(BRIDGES_HEADERS
+       "implementation/bridges/NativeField.hpp"
+       "implementation/bridges/NativeVectorModel.hpp"
+       "implementation/bridges/NativeGame.hpp"
+       "implementation/bridges/NativeWalls.hpp"
+       "implementation/bridges/NativeSnakeModel.hpp")
 endif()
 
 sbis_set_sources(
@@ -42,16 +48,12 @@ sbis_set_sources(
 )
 
 sbis_set_headers(
-   "implementation/bridges/NativeField.hpp"
-   "implementation/bridges/NativePoint.hpp"
-   "implementation/bridges/NativeGame.hpp"
-   "implementation/bridges/NativeWalls.hpp"
-   "implementation/bridges/NativeSnakeModel.hpp"
+   ${BRIDGES_HEADERS}
    "implementation/generated/snake_model.hpp"
    "implementation/generated/field.hpp"
    "implementation/generated/walls.hpp"
    "implementation/generated/game.hpp"
-   "implementation/generated/point.hpp"
+   "implementation/generated/vector_model.hpp"
    "implementation/client_game_room.h"
 )
 
