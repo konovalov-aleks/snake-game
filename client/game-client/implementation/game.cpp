@@ -30,9 +30,12 @@ public:
 private:
    boost::optional<boost::uuids::uuid> mId;
    Vector2D mLastHeadPos;
+   boost::posix_time::ptime mLastActionTime;
+
+   static const int MIN_ACTION_PERIOD = 50; // мс
 };
 
-GameImpl::GameImpl() : mLastHeadPos{ 30, 30 }
+GameImpl::GameImpl() : mLastHeadPos{ 0, 0 }
 {
    Config::Instance().Set( L"gameserver.Адрес", L"http://10.76.174.14:20082" );
    Config::Instance().Set( L"Ядро.Логирование.Уровень", L"Отладочный" );
@@ -50,8 +53,12 @@ void GameImpl::Run()
 
 void GameImpl::SetDirection(int32_t dx, int32_t dy)
 {
-   if( mId )
+   boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
+   if( mId && ( now - mLastActionTime ).total_milliseconds() >= MIN_ACTION_PERIOD )
+   {
+      mLastActionTime = now;
       ClientGameRoom::Instance().SetPlayerDirection( *mId, Vector2D( dx, dy ) );
+   }
 }
 
 Field GameImpl::GetField()
@@ -92,7 +99,7 @@ Field GameImpl::GetField()
          dir = Vector2D( head.getX() - player_points[1].getX(),
                          head.getY() - player_points[1].getY() );
       dir.normalize();
-      dir *= 5;
+      dir *= 0.7;
 
       VectorModel left_eye( head.getX() - dir.getY(), head.getY() + dir.getX() );
       VectorModel right_eye( head.getX() + dir.getY(), head.getY() - dir.getX() );
@@ -103,30 +110,16 @@ Field GameImpl::GetField()
          res_snakes.push_back( std::move( snake ) );
    }
 
-   // Пока мы не в игре, будем смотреть в "центр мира" - то есть в центр масс игрового пространства,
-   // иначе - центр экрана позиционируем по положению головы нашей змеи
-   VectorModel world_center( 0, 0 );
-   if( cur_snake )
-      world_center = cur_snake->points[ 0 ];
-   else
-   {
-      for( const SnakeModel& v : res_snakes )
-      {
-         world_center.x += v.points[0].x;
-         world_center.y += v.points[0].y;
-      }
-      world_center.x /= res_snakes.size();
-      world_center.y /= res_snakes.size();
-   }
-
    const auto& bonuses = ClientGameRoom::Instance().Bonuses();
    std::vector<VectorModel> field_bonuses;
    field_bonuses.reserve( bonuses.size() );
    for( const auto& b : bonuses )
       field_bonuses.push_back( VectorModel( b.Position().getX(), b.Position().getY() ) );
 
-   return Field( Walls( 0, 0, 0, 0 ), std::move( world_center ), std::move( res_snakes ),
-                 std::move( cur_snake ), std::move( field_bonuses ) );
+   const auto& dimensions = ClientGameRoom::Instance().WorldDimensions();
+   return Field( Walls( dimensions.first.getX(), dimensions.first.getY(),
+                        dimensions.second.getX(), dimensions.second.getY() ),
+                 std::move( res_snakes ), std::move( cur_snake ), std::move( field_bonuses ) );
 }
 
 } // namespace

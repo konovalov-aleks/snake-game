@@ -13,13 +13,13 @@ namespace sbis
 namespace game
 {
 
-GameRoom::GameRoom()
+GameRoom::GameRoom() : mWorldDimensions{ { -128, -128 }, { 128, 128 } }
 {}
 
 boost::uuids::uuid GameRoom::Enter()
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   return mPlayers.emplace( DoEnter(), Snake( Vector2D( 30, 30 ), 150.0, Vector2D( 0, 1 ), 30 ) ).first->first;
+   return mPlayers.emplace( DoEnter(), Snake( Vector2D( 0, 0 ), 20, Vector2D( 0, 1 ), 30 ) ).first->first;
 }
 
 void GameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction )
@@ -37,15 +37,21 @@ void GameRoom::Run( int dt )
    std::vector<boost::unordered_map<boost::uuids::uuid, Snake>::iterator> killed_snakes;
    for( auto it = mPlayers.begin(); it != mPlayers.end(); ++it )
    {
-      Vector2D head_pos = it->second.Points().front();
+      Vector2D old_head_pos = it->second.Points().front();
       it->second.Move( dt );
-      if( CheckCollisions( it->second, head_pos ) )
+      Vector2D new_head_pos = it->second.Points().front();
+      if( SBIS_UNLIKELY(
+            new_head_pos.getX() < WorldDimensions().first.getX() ||
+            new_head_pos.getY() < WorldDimensions().first.getY() ||
+            new_head_pos.getX() > WorldDimensions().second.getX() ||
+            new_head_pos.getY() > WorldDimensions().second.getY() ||
+            CheckCollisions( it->second, old_head_pos ) ) )
       {
          killed_snakes.push_back( it );
          LogMsg( L"snake killed" );
       }
       else
-         EatBonuses( it->second, head_pos );
+         EatBonuses( it->second, old_head_pos );
    }
    for( auto& it : killed_snakes )
    {
