@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 import ru.tensor.generated.Field;
 import ru.tensor.generated.Game;
@@ -33,15 +34,19 @@ import ru.tensor.sbis.core.Initializer;
 
 public class MainActivity extends Activity {
 
+    RelativeLayout mainMenu;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Initializer.init(this, "snake-game");
+
+        if(savedInstanceState == null)
+            Initializer.init(this, "snake-game");
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         FrameLayout game = new FrameLayout(this);
 
-        final RelativeLayout mainMenu = (RelativeLayout) View.inflate(this, R.layout.main_menu, null);
+        mainMenu = (RelativeLayout) View.inflate(this, R.layout.main_menu, null);
         Button startBtn = (Button) mainMenu.findViewById(R.id.start_button);
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,7 +109,12 @@ public class MainActivity extends Activity {
                     mTouchY = (int) motionEvent.getY();
                     int dx = mTouchX - view.getWidth() / 2;
                     int dy = mTouchY - view.getHeight() / 2;
-                    Game.instance().setDirection(dx, dy);
+                    try {
+                        Game.instance().setDirection(dx, dy);
+                    }
+                    catch(Exception ex) {
+                        ex.printStackTrace();
+                    }
                     return true;
                 case MotionEvent.ACTION_UP:
                     mTouchPressed = false;
@@ -229,6 +239,7 @@ public class MainActivity extends Activity {
                 double lastFrameTime = System.currentTimeMillis();
 
                 Matrix matrix = new Matrix();
+                VectorModel cameraPos = new VectorModel(0, 0);
 
                 while (running) {
                     double curTime = System.currentTimeMillis();
@@ -247,17 +258,29 @@ public class MainActivity extends Activity {
                         if (canvas == null)
                             continue;
 
-                        VectorModel center = fld.getDisplayCenter();
-                        drawBackground(canvas, center);
+                        SnakeModel my_snake = fld.getMySnake();
 
-                        matrix.setTranslate(canvas.getWidth() / 2 - mmToPixels(center.getX()),
-                                canvas.getHeight() / 2 - mmToPixels(center.getY()));
+                        if( my_snake != null )
+                            cameraPos = my_snake.getPoints().get(0);
+                        drawBackground(canvas, cameraPos);
+
+                        matrix.setTranslate(canvas.getWidth() / 2 - mmToPixels(cameraPos.getX()),
+                                canvas.getHeight() / 2 - mmToPixels(cameraPos.getY()));
                         canvas.setMatrix(matrix);
 
+                        // рисуем стены
+                        drawWalls(canvas, fld.getWalls());
+
                         // рисуем змей
-                        SnakeModel my_snake = fld.getMySnake();
                         if (my_snake != null)
                             drawSnake(canvas, cur_pl_paint, my_snake);
+                        else
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mainMenu.setVisibility(View.VISIBLE);
+                                }
+                            });
 
                         ArrayList<SnakeModel> snakes = fld.getSnakes();
                         for (SnakeModel snake : snakes)
@@ -267,9 +290,6 @@ public class MainActivity extends Activity {
                         ArrayList<VectorModel> bonuses = fld.getBonuses();
                         for (VectorModel b : bonuses)
                             drawBonus(canvas, b);
-
-                        // рисуем стены
-                        drawWalls(canvas, fld.getWalls());
                     } finally {
                         if (canvas != null) {
                             surfaceHolder.unlockCanvasAndPost(canvas);

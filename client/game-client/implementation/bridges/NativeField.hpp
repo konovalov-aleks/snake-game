@@ -25,9 +25,8 @@ private:
     friend ::djinni::JniClass<NativeField>;
 
     const ::djinni::GlobalRef<jclass> clazz { ::djinni::jniFindClass("ru/tensor/generated/Field") };
-    const jmethodID jconstructor { ::djinni::jniGetMethodID(clazz.get(), "<init>", "(Lru/tensor/generated/Walls;Lru/tensor/generated/VectorModel;Ljava/util/ArrayList;Lru/tensor/generated/SnakeModel;Ljava/util/ArrayList;)V") };
+    const jmethodID jconstructor { ::djinni::jniGetMethodID(clazz.get(), "<init>", "(Lru/tensor/generated/Walls;Ljava/util/ArrayList;Lru/tensor/generated/SnakeModel;Ljava/util/ArrayList;)V") };
     const jfieldID field_mWalls { ::djinni::jniGetFieldID(clazz.get(), "mWalls", "Lru/tensor/generated/Walls;") };
-    const jfieldID field_mDisplayCenter { ::djinni::jniGetFieldID(clazz.get(), "mDisplayCenter", "Lru/tensor/generated/VectorModel;") };
     const jfieldID field_mSnakes { ::djinni::jniGetFieldID(clazz.get(), "mSnakes", "Ljava/util/ArrayList;") };
     const jfieldID field_mMySnake { ::djinni::jniGetFieldID(clazz.get(), "mMySnake", "Lru/tensor/generated/SnakeModel;") };
     const jfieldID field_mBonuses { ::djinni::jniGetFieldID(clazz.get(), "mBonuses", "Ljava/util/ArrayList;") };

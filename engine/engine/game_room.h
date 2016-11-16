@@ -30,6 +30,8 @@ public:
    std::vector<Bonus> Bonuses() const;
    void SetBonuses( std::vector<Bonus> bonuses );
 
+   const std::pair<Vector2D, Vector2D>& WorldDimensions() const { return mWorldDimensions; }
+
 protected:
    GameRoom();
 
@@ -46,6 +48,8 @@ private:
 
    std::vector<Bonus> mBonuses;
    mutable boost::mutex mBonusesMtx;
+
+   const std::pair<Vector2D, Vector2D> mWorldDimensions;
 };
 
 } // namespace game

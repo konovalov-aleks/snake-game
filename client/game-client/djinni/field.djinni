@@ -4,7 +4,6 @@
 
 field = record {
 	walls: walls;
-	display_center: vector_model;
 	snakes: list<snake_model>;
 	my_snake: optional<snake_model>;
 	bonuses: list<vector_model>;
