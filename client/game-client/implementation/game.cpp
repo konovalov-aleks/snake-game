@@ -30,9 +30,10 @@ public:
 private:
    boost::optional<boost::uuids::uuid> mId;
    Vector2D mLastHeadPos;
+   const Walls mWalls;
 };
 
-GameImpl::GameImpl() : mLastHeadPos{ 30, 30 }
+GameImpl::GameImpl() : mLastHeadPos{ 0, 0 }, mWalls{ -256, -256, 256, 256 }
 {
    Config::Instance().Set( L"gameserver.Адрес", L"http://10.76.174.14:20082" );
    Config::Instance().Set( L"Ядро.Логирование.Уровень", L"Отладочный" );
@@ -92,7 +93,7 @@ Field GameImpl::GetField()
          dir = Vector2D( head.getX() - player_points[1].getX(),
                          head.getY() - player_points[1].getY() );
       dir.normalize();
-      dir *= 5;
+      dir *= 0.7;
 
       VectorModel left_eye( head.getX() - dir.getY(), head.getY() + dir.getX() );
       VectorModel right_eye( head.getX() + dir.getY(), head.getY() - dir.getX() );
@@ -125,7 +126,7 @@ Field GameImpl::GetField()
    for( const auto& b : bonuses )
       field_bonuses.push_back( VectorModel( b.Position().getX(), b.Position().getY() ) );
 
-   return Field( Walls( 0, 0, 0, 0 ), std::move( world_center ), std::move( res_snakes ),
+   return Field( mWalls, std::move( world_center ), std::move( res_snakes ),
                  std::move( cur_snake ), std::move( field_bonuses ) );
 }
 

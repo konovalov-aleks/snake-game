@@ -19,7 +19,7 @@ GameRoom::GameRoom()
 boost::uuids::uuid GameRoom::Enter()
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   return mPlayers.emplace( DoEnter(), Snake( Vector2D( 30, 30 ), 150.0, Vector2D( 0, 1 ), 30 ) ).first->first;
+   return mPlayers.emplace( DoEnter(), Snake( Vector2D( 0, 0 ), 20, Vector2D( 0, 1 ), 30 ) ).first->first;
 }
 
 void GameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction )
