@@ -40,6 +40,7 @@
 		7243DC3B1DDB22BB00E14DFD /* libboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC3A1DDB22BB00E14DFD /* libboost.a */; };
 		7243DC3D1DDB233200E14DFD /* libsbis-xml300.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7243DC3C1DDB233200E14DFD /* libsbis-xml300.a */; };
 		7290FABF1DDB2C4E002835DB /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 7290FABE1DDB2C4E002835DB /* SwiftTryCatch.m */; };
+		7290FAC11DDC6FD1002835DB /* GameCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7290FAC01DDC6FD1002835DB /* GameCanvasView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		7243DC3C1DDB233200E14DFD /* libsbis-xml300.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libsbis-xml300.a"; path = "../../../../../core-build-armv7/SDK-build/fake/bin/ios/universal/clang/release/libsbis-xml300.a"; sourceTree = "<group>"; };
 		7290FABD1DDB2C4E002835DB /* SwiftTryCatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SwiftTryCatch.h; path = Game/SwiftTryCatch/SwiftTryCatch.h; sourceTree = "<group>"; };
 		7290FABE1DDB2C4E002835DB /* SwiftTryCatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SwiftTryCatch.m; path = Game/SwiftTryCatch/SwiftTryCatch.m; sourceTree = "<group>"; };
+		7290FAC01DDC6FD1002835DB /* GameCanvasView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCanvasView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				7243DBCE1DDB0A9C00E14DFD /* Generated */,
 				7243DBB31DDAF05D00E14DFD /* AppDelegate.swift */,
 				7243DBB51DDAF05D00E14DFD /* ViewController.swift */,
+				7290FAC01DDC6FD1002835DB /* GameCanvasView.swift */,
 				7243DBB71DDAF05D00E14DFD /* Main.storyboard */,
 				7243DBBA1DDAF05D00E14DFD /* Assets.xcassets */,
 				7243DBBC1DDAF05D00E14DFD /* LaunchScreen.storyboard */,
@@ -363,6 +366,7 @@
 				7243DBFF1DDB0C9B00E14DFD /* DJIError.mm in Sources */,
 				7243DC211DDB1FCA00E14DFD /* SDGame+Private.mm in Sources */,
 				7243DC201DDB1FCA00E14DFD /* SDField+Private.mm in Sources */,
+				7290FAC11DDC6FD1002835DB /* GameCanvasView.swift in Sources */,
 				7243DBB41DDAF05D00E14DFD /* AppDelegate.swift in Sources */,
 				7243DC241DDB1FCA00E14DFD /* SDVectorModel+Private.mm in Sources */,
 			);
