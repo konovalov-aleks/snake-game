@@ -19,14 +19,14 @@ namespace game
 class GameRoom : boost::noncopyable
 {
 public:
-   boost::uuids::uuid Enter();
+   const Snake& Enter();
    virtual void SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction );
 
    GameState State();
    void SetState( GameState state );
 
-   boost::unordered_map<boost::uuids::uuid, Snake> Players() const;
-   void SetPlayers( boost::unordered_map<boost::uuids::uuid, Snake> players );
+   std::vector<Snake> Players() const;
+   void SetPlayers( std::vector<Snake> players );
    std::vector<Bonus> Bonuses() const;
    void SetBonuses( std::vector<Bonus> bonuses );
 
@@ -36,7 +36,7 @@ protected:
    GameRoom();
 
    void Run( int dt );
-   virtual boost::uuids::uuid DoEnter() = 0;
+   virtual Snake DoEnter() = 0;
 
 private:
    bool CheckCollisions( const Snake& snake, const Vector2D& old_head_pos );

@@ -16,16 +16,17 @@ namespace game
 GameRoom::GameRoom() : mWorldDimensions{ { -128, -128 }, { 128, 128 } }
 {}
 
-boost::uuids::uuid GameRoom::Enter()
+const Snake& GameRoom::Enter()
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   return mPlayers.emplace( DoEnter(), Snake( Vector2D( 0, 0 ), 20, Vector2D( 0, 1 ), 30 ) ).first->first;
+   Snake snake = DoEnter();
+   return mPlayers.emplace( snake.ID(), snake ).first->second;
 }
 
 void GameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction )
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   auto player = mPlayers.find( pid );
+   auto player = mPlayers.find( boost::cref( pid ) );
    if( SBIS_UNLIKELY( player == mPlayers.end() ) )
       Error<Exception>( L"Unknown user <" + ToString( pid ) + L'>' );
    player->second.SetDirection( direction );
@@ -34,24 +35,25 @@ void GameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D
 void GameRoom::Run( int dt )
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   std::vector<boost::unordered_map<boost::uuids::uuid, Snake>::iterator> killed_snakes;
+   std::vector<decltype(mPlayers)::iterator> killed_snakes;
    for( auto it = mPlayers.begin(); it != mPlayers.end(); ++it )
    {
-      Vector2D old_head_pos = it->second.Points().front();
-      it->second.Move( dt );
-      Vector2D new_head_pos = it->second.Points().front();
+      Snake& snake = it->second;
+      Vector2D old_head_pos = snake.Points().front();
+      snake.Move( dt );
+      Vector2D new_head_pos = snake.Points().front();
       if( SBIS_UNLIKELY(
             new_head_pos.getX() < WorldDimensions().first.getX() ||
             new_head_pos.getY() < WorldDimensions().first.getY() ||
             new_head_pos.getX() > WorldDimensions().second.getX() ||
             new_head_pos.getY() > WorldDimensions().second.getY() ||
-            CheckCollisions( it->second, old_head_pos ) ) )
+            CheckCollisions( snake, old_head_pos ) ) )
       {
          killed_snakes.push_back( it );
          LogMsg( L"snake killed" );
       }
       else
-         EatBonuses( it->second, old_head_pos );
+         EatBonuses( snake, old_head_pos );
    }
    for( auto& it : killed_snakes )
    {
@@ -113,16 +115,25 @@ void GameRoom::EatBonuses( const Snake& /*snake*/, const Vector2D& /*old_head_po
    // TODO найти бонусы, которые съела змея за данный такт, убрать их с поля и увеличить змею
 }
 
-boost::unordered_map<boost::uuids::uuid, Snake> GameRoom::Players() const
+std::vector<Snake> GameRoom::Players() const
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   return mPlayers;
+   std::vector<Snake> res;
+   res.reserve( mPlayers.size() );
+   for( auto& it : mPlayers )
+      res.push_back( it.second );
+   return res;
 }
 
-void GameRoom::SetPlayers( boost::unordered_map<boost::uuids::uuid, Snake> players )
+void GameRoom::SetPlayers( std::vector<Snake> players )
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
-   mPlayers = std::move( players );
+   mPlayers.clear();
+   for( Snake& s : players )
+   {
+      boost::uuids::uuid id = s.ID();
+      mPlayers.emplace( std::move( id ), std::move( s ) );
+   }
 }
 
 std::vector<Bonus> GameRoom::Bonuses() const

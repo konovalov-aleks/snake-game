@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <boost/unordered_map.hpp>
 #include <boost/uuid/uuid.hpp>
@@ -13,7 +13,7 @@ namespace game
 
 struct GameState
 {
-   boost::unordered_map<boost::uuids::uuid, Snake> players;
+   std::vector<Snake> players;
    std::vector<Bonus> bonuses;
 };
 

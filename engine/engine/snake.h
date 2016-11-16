@@ -1,4 +1,7 @@
-#pragma once
+﻿#pragma once
+
+#include <boost/intrusive/unordered_set_hook.hpp>
+#include <boost/uuid/uuid.hpp>
 
 #include <vector>
 
@@ -14,8 +17,8 @@ class Snake
 {
 public:
    Snake();
-   Snake( const Vector2D& pos, double speed, const Vector2D& direction,
-          UInt32 length );
+   Snake( boost::uuids::uuid id, const Vector2D& pos, double speed,
+          const Vector2D& direction, UInt32 length );
 
    const std::vector<Vector2D>& Points() const { return mPoints; }
    const Vector2D& Speed() const { return mSpeed; }
@@ -23,10 +26,13 @@ public:
    void SetDirection( Vector2D direction );
    void Move( int dt );
 
+   const boost::uuids::uuid& ID() const { return mId; }
+
 private:
    Vector2D mSpeed;
    double mLinearSpeed;
    UInt32 mLength;
+   boost::uuids::uuid mId;
 
    std::vector<Vector2D> mPoints;
 
