@@ -8,19 +8,15 @@
 
 @interface SDField : NSObject
 - (nonnull instancetype)initWithWalls:(nonnull SDWalls *)walls
-                        displayCenter:(nonnull SDVectorModel *)displayCenter
                                snakes:(nonnull NSArray<SDSnakeModel *> *)snakes
                               mySnake:(nullable SDSnakeModel *)mySnake
                               bonuses:(nonnull NSArray<SDVectorModel *> *)bonuses;
 + (nonnull instancetype)fieldWithWalls:(nonnull SDWalls *)walls
-                         displayCenter:(nonnull SDVectorModel *)displayCenter
                                 snakes:(nonnull NSArray<SDSnakeModel *> *)snakes
                                mySnake:(nullable SDSnakeModel *)mySnake
                                bonuses:(nonnull NSArray<SDVectorModel *> *)bonuses;
 
 @property (nonatomic, readonly, nonnull) SDWalls * walls;
-
-@property (nonatomic, readonly, nonnull) SDVectorModel * displayCenter;
 
 @property (nonatomic, readonly, nonnull) NSArray<SDSnakeModel *> * snakes;
 

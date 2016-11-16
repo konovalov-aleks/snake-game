@@ -7,14 +7,12 @@
 @implementation SDField
 
 - (nonnull instancetype)initWithWalls:(nonnull SDWalls *)walls
-                        displayCenter:(nonnull SDVectorModel *)displayCenter
                                snakes:(nonnull NSArray<SDSnakeModel *> *)snakes
                               mySnake:(nullable SDSnakeModel *)mySnake
                               bonuses:(nonnull NSArray<SDVectorModel *> *)bonuses
 {
     if (self = [super init]) {
         _walls = walls;
-        _displayCenter = displayCenter;
         _snakes = [snakes copy];
         _mySnake = mySnake;
         _bonuses = [bonuses copy];
@@ -23,13 +21,11 @@
 }
 
 + (nonnull instancetype)fieldWithWalls:(nonnull SDWalls *)walls
-                         displayCenter:(nonnull SDVectorModel *)displayCenter
                                 snakes:(nonnull NSArray<SDSnakeModel *> *)snakes
                                mySnake:(nullable SDSnakeModel *)mySnake
                                bonuses:(nonnull NSArray<SDVectorModel *> *)bonuses
 {
     return [[self alloc] initWithWalls:walls
-                         displayCenter:displayCenter
                                 snakes:snakes
                                mySnake:mySnake
                                bonuses:bonuses];
@@ -37,7 +33,7 @@
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ %p walls:%@ displayCenter:%@ snakes:%@ mySnake:%@ bonuses:%@>", self.class, (void *)self, self.walls, self.displayCenter, self.snakes, self.mySnake, self.bonuses];
+    return [NSString stringWithFormat:@"<%@ %p walls:%@ snakes:%@ mySnake:%@ bonuses:%@>", self.class, (void *)self, self.walls, self.snakes, self.mySnake, self.bonuses];
 }
 
 @end

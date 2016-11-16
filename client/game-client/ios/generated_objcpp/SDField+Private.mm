@@ -14,7 +14,6 @@ auto Field::toCpp(ObjcType obj) -> CppType
 {
     assert(obj);
     return {::djinni_generated::Walls::toCpp(obj.walls),
-            ::djinni_generated::VectorModel::toCpp(obj.displayCenter),
             ::djinni::List<::djinni_generated::SnakeModel>::toCpp(obj.snakes),
             ::djinni::Optional<boost::optional, ::djinni_generated::SnakeModel>::toCpp(obj.mySnake),
             ::djinni::List<::djinni_generated::VectorModel>::toCpp(obj.bonuses)};
@@ -23,7 +22,6 @@ auto Field::toCpp(ObjcType obj) -> CppType
 auto Field::fromCpp(const CppType& cpp) -> ObjcType
 {
     return [[SDField alloc] initWithWalls:(::djinni_generated::Walls::fromCpp(cpp.walls))
-                            displayCenter:(::djinni_generated::VectorModel::fromCpp(cpp.display_center))
                                    snakes:(::djinni::List<::djinni_generated::SnakeModel>::fromCpp(cpp.snakes))
                                   mySnake:(::djinni::Optional<boost::optional, ::djinni_generated::SnakeModel>::fromCpp(cpp.my_snake))
                                   bonuses:(::djinni::List<::djinni_generated::VectorModel>::fromCpp(cpp.bonuses))];
