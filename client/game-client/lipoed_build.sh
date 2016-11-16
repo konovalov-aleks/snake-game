@@ -10,7 +10,7 @@ do
     build_dir=build_${arch}
     [ ! -d ${build_dir} ] && mkdir ${build_dir}
     pushd ${build_dir}
-    cmake -DSBIS_LIBS_TYPE=static -DSBIS_OS=ios -DSBIS_ARCHITECTURE=${arch} -DCMAKE_TOOLCHAIN_FILE=${SBISPlatformSDK_374220}/tools/cmake_support/lib/common/core/toolchains/ios.toolchain.clang.cmake.txt -G Ninja ../
+    cmake -DSBIS_LIBS_TYPE=static -DSBIS_OS=ios -DSBIS_ARCHITECTURE=${arch} -DSBIS_OPTIMIZATIONS=1 -DCMAKE_TOOLCHAIN_FILE=${SBISPlatformSDK_374220}/tools/cmake_support/lib/common/core/toolchains/ios.toolchain.clang.cmake.txt -G Ninja ../
     ninja
     popd
 done

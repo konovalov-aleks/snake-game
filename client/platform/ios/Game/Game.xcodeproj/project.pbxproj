@@ -490,6 +490,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = WUMC7P4M43;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "${HOME}/Work/BoostExperiments_FatFramework/build/src/boost_1_61_0";
 				INFOPLIST_FILE = Game/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -513,6 +514,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = WUMC7P4M43;
+				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = "${HOME}/Work/BoostExperiments_FatFramework/build/src/boost_1_61_0";
 				INFOPLIST_FILE = Game/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
