@@ -37,6 +37,7 @@ void Snake::Move( int dt )
 void Snake::SetDirection( Vector2D direction )
 {
    // TODO не давать повернуть слишком резко
+   direction.normalize();
    mSpeed = direction * mLinearSpeed;
 }
 
