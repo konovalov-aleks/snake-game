@@ -32,6 +32,12 @@ void GameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D
    player->second.SetDirection( direction );
 }
 
+void GameRoom::AddBonus( const Vector2D& position )
+{
+   boost::unique_lock<boost::mutex> lock( mBonusesMtx );
+   mBonuses.insert( position );
+}
+
 void GameRoom::Run( int dt )
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
@@ -105,9 +111,10 @@ bool GameRoom::CheckCollisions( const Snake& snake, const Vector2D& old_head_pos
    return false;
 }
 
-void GameRoom::OnSnakeKilled( const Snake& /*snake*/ )
+void GameRoom::OnSnakeKilled( const Snake& snake )
 {
-   // TODO создать бонусы
+   for( const Vector2D& p : snake.Points() )
+      AddBonus( p );
 }
 
 void GameRoom::EatBonuses( const Snake& /*snake*/, const Vector2D& /*old_head_pos*/ )
@@ -139,13 +146,13 @@ void GameRoom::SetPlayers( std::vector<Snake> players )
 std::vector<Bonus> GameRoom::Bonuses() const
 {
    boost::unique_lock<boost::mutex> lock( mBonusesMtx );
-   return mBonuses;
+   return std::vector<Bonus>( mBonuses.begin(), mBonuses.end() );
 }
 
 void GameRoom::SetBonuses( std::vector<Bonus> bonuses )
 {
    boost::unique_lock<boost::mutex> lock( mBonusesMtx );
-   mBonuses = std::move( bonuses );
+   mBonuses = std::set<Bonus>( bonuses.begin(), bonuses.end() );
 }
 
 GameState GameRoom::State()
@@ -160,6 +167,20 @@ void GameRoom::SetState( GameState state )
 {
    SetPlayers( std::move( state.players ) );
    SetBonuses( std::move( state.bonuses ) );
+}
+
+void GameRoom::ApplyStateDelta( GameState state )
+{
+   {
+      boost::unique_lock<boost::mutex> lock( mBonusesMtx );
+      for( Bonus& b : state.bonuses )
+         mBonuses.insert( std::move( b ) );
+   }
+   {
+      boost::unique_lock<boost::mutex> lock( mPlayersMtx );
+      for( Snake& s : state.players )
+         mPlayers[ s.ID() ] = std::move( s );
+   }
 }
 
 } // namespace game

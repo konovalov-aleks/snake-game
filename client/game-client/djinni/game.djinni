@@ -1,10 +1,11 @@
 @import "field.djinni"
+@import "vector.djinni"
 
 game = interface +c {
 	static instance() : game;
 
 	enter();
-        run();
+        run(disp_width: f32, disp_height: f32);
 	set_direction(dx: i32, dy: i32);
 	get_field(): field;
 }

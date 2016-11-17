@@ -79,6 +79,7 @@ final class GameDrawer {
             {
                 setColor(Color.YELLOW);
                 setStyle(Style.STROKE);
+                setAntiAlias(true);
                 setPathEffect(new CornerPathEffect(mmToPixels(5)));
                 setStrokeWidth(mmToPixels(1.5f));
                 setAlpha(128);

@@ -22,8 +22,11 @@ public:
    const Snake& Enter();
    virtual void SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction );
 
+   void AddBonus( const Vector2D& position );
+
    GameState State();
    void SetState( GameState state );
+   void ApplyStateDelta( GameState state );
 
    std::vector<Snake> Players() const;
    void SetPlayers( std::vector<Snake> players );
@@ -46,7 +49,7 @@ private:
    boost::unordered_map<boost::uuids::uuid, Snake> mPlayers;
    mutable boost::mutex mPlayersMtx;
 
-   std::vector<Bonus> mBonuses;
+   std::set<Bonus> mBonuses;
    mutable boost::mutex mBonusesMtx;
 
    const std::pair<Vector2D, Vector2D> mWorldDimensions;

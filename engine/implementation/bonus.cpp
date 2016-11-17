@@ -2,6 +2,17 @@
 
 namespace sbis
 {
+namespace game
+{
+
+bool Bonus::operator< ( const Bonus& another ) const
+{
+   if( mPosition.getX() == another.mPosition.getX() )
+      return mPosition.getY() < another.mPosition.getY();
+   return mPosition.getX() < another.mPosition.getX();
+}
+
+} // namespace game
 
 void Serialization<game::Bonus>::Read( IObjectReader& reader, game::Bonus& bonus )
 {
