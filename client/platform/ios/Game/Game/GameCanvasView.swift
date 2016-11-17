@@ -47,6 +47,12 @@ class GameCanvasView: UIView {
         // рисуем стены
         drawWalls(ctx: ctx, walls: fld.walls)
         
+        // отрисовка бонусов
+        let bonuses = fld.bonuses
+        for bonus in bonuses {
+            drawBonus(ctx: ctx, bonus: bonus)
+        }
+        
         // Рисуем свою змейку
         if mySnake != nil {
             drawSnake(ctx: ctx, color: mySnakeCGColor, snake: mySnake!)
@@ -55,11 +61,6 @@ class GameCanvasView: UIView {
         let snakes = fld.snakes
         for snake in snakes {
             drawSnake(ctx: ctx, color: otherSnakesCGColor, snake: snake)
-        }
-        // отрисовка бонусов
-        let bonuses = fld.bonuses
-        for bonus in bonuses {
-            drawBonus(ctx: ctx, bonus: bonus)
         }
         // после отрисовки делегируем контроллеру определение того, закончилась игра или нет
         delegate?.handleGameOver()
@@ -136,12 +137,26 @@ class GameCanvasView: UIView {
             bodyPath.addLine(to: CGPoint(x: mmToPoints(CGFloat(p.x)), y: mmToPoints(CGFloat(p.y))))
         }
         ctx.saveGState()
-        ctx.setStrokeColor(color)
-        ctx.setLineWidth(mmToPoints(4))
+        
+        ctx.setShadow(offset: CGSize(width: 0, height: 0), blur: 2.5, color: blackCGColor)
         
         let cgBodyPath = bodyPath.cgPath
-        ctx.addPath(cgBodyPath)
-        ctx.strokePath()
+        let cgColorComponents = color.components!
+        
+        for i in 1...3 {
+            ctx.saveGState()
+            ctx.setLineWidth(mmToPoints(CGFloat(3.0 - 0.4 * Double(i))))
+            // эмулируем LightingColorFilter из android
+            
+            let adjustedCol = UIColor(red: cgColorComponents[0] * CGFloat(128 + i * 40) / 255,
+                                      green: cgColorComponents[1] * CGFloat(128 + i * 30) / 255,
+                                      blue: cgColorComponents[2] * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+            ctx.setStrokeColor(adjustedCol.cgColor)
+            ctx.addPath(cgBodyPath)
+            ctx.strokePath()
+            ctx.restoreGState()
+        }
+        
         ctx.restoreGState()
         
         // глаза змеи
