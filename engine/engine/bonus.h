@@ -14,6 +14,8 @@ public:
    Bonus( const Vector2D& position ) : mPosition( position ) {}
    const Vector2D& Position() const { return mPosition; }
 
+   bool operator< ( const Bonus& another ) const;
+
 private:
    Vector2D mPosition;
 };

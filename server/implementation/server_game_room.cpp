@@ -9,6 +9,8 @@ namespace sbis
 namespace game
 {
 
+const float SNAKE_SPEED = 20.0f;
+
 ServerGameRoom& ServerGameRoom::Instance()
 {
    static ServerGameRoom instance;
@@ -38,7 +40,7 @@ Snake ServerGameRoom::DoEnter()
    Vector2D initial_pos( ( rand() % world_width + WorldDimensions().first.getX() ) / 2,
                          ( rand() % world_height + WorldDimensions().first.getY() ) / 2 );
    Vector2D direction( rand() % 100 - 50, rand() % 100 - 50 );
-   return Snake( GenerateUUIDRandomDevice(), std::move( initial_pos ), 20, std::move( direction ), 5 );
+   return Snake( GenerateUUIDRandomDevice(), std::move( initial_pos ), SNAKE_SPEED, std::move( direction ), 50 );
 }
 
 RPC_FUNC_2( L"GameRoom.SetPlayerDirection", void, GameRoom_SetPlayerDirection,
@@ -54,9 +56,40 @@ RPC_FUNC_0( L"GameRoom.Enter", Snake, GameRoom_Enter )
    result = ServerGameRoom::Instance().Enter();
 }
 
-RPC_FUNC_0( L"GameRoom.State", GameState, GameRoom_State )
+RPC_FUNC_2( L"GameRoom.State", GameState, GameRoom_State,
+            Vector2D, L"vp_center", vp_center,
+            Vector2D, L"vp_size", vp_size )
 {
    result = ServerGameRoom::Instance().State();
+
+   // Возвращаем только объекты, которые входят в указанную область
+   const float minx = vp_center.getX() - vp_size.getX() / 2 - SNAKE_SPEED * 2;
+   const float maxx = vp_center.getX() + vp_size.getX() / 2 + SNAKE_SPEED * 2;
+   const float miny = vp_center.getY() - vp_size.getY() / 2 - SNAKE_SPEED * 2;
+   const float maxy = vp_center.getY() + vp_size.getY() / 2 + SNAKE_SPEED * 2;
+
+   // Для змей расширяем границы на случай, если она приползет на экран в период между синхронизациями
+   const float sminx = minx - SNAKE_SPEED * 2;
+   const float smaxx = maxx + SNAKE_SPEED * 2;
+   const float sminy = miny - SNAKE_SPEED * 2;
+   const float smaxy = maxy + SNAKE_SPEED * 2;
+   result.players.erase(
+      std::remove_if( result.players.begin(), result.players.end(),
+         [ sminx, smaxx, sminy, smaxy ]( const Snake& s )
+      {
+         for( const Vector2D& p : s.Points() )
+            if( p.getX() >= sminx && p.getX() <= smaxx && p.getY() >= sminy && p.getY() <= smaxy )
+               return false;
+         return true;
+      } ), result.players.end() );
+
+   result.bonuses.erase(
+      std::remove_if( result.bonuses.begin(), result.bonuses.end(),
+         [ minx, maxx, miny, maxy ]( const Bonus& b )
+      {
+         const Vector2D& pos = b.Position();
+         return pos.getX() < minx || pos.getX() > maxx || pos.getY() < miny || pos.getY() > maxy;
+      } ), result.bonuses.end() );
 }
 
 } // namespace game

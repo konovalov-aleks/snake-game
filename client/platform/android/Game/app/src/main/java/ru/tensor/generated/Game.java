@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public abstract class Game {
     public abstract void enter();
 
-    public abstract void run();
+    public abstract void run(float dispWidth, float dispHeight);
 
     public abstract void setDirection(int dx, int dy);
 
@@ -48,12 +48,12 @@ public abstract class Game {
         private native void native_enter(long _nativeRef);
 
         @Override
-        public void run()
+        public void run(float dispWidth, float dispHeight)
         {
             assert !this.destroyed.get() : "trying to use a destroyed object";
-            native_run(this.nativeRef);
+            native_run(this.nativeRef, dispWidth, dispHeight);
         }
-        private native void native_run(long _nativeRef);
+        private native void native_run(long _nativeRef, float dispWidth, float dispHeight);
 
         @Override
         public void setDirection(int dx, int dy)

@@ -23,7 +23,7 @@ public:
    GameImpl();
 
    virtual void Enter() override;
-   virtual void Run() override;
+   virtual void Run( float disp_width, float disp_height ) override;
    virtual void SetDirection(int32_t dx, int32_t dy) override;
    virtual Field GetField() override;
 
@@ -48,9 +48,9 @@ void GameImpl::Enter()
    mId = snake.ID();
 }
 
-void GameImpl::Run()
+void GameImpl::Run( float disp_width, float disp_height )
 {
-   ClientGameRoom::Instance().Run();
+   ClientGameRoom::Instance().Run( mLastHeadPos, Vector2D( disp_width, disp_height ) );
 }
 
 void GameImpl::SetDirection(int32_t dx, int32_t dy)

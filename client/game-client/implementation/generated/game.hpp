@@ -16,7 +16,7 @@ public:
 
     virtual void Enter() = 0;
 
-    virtual void Run() = 0;
+    virtual void Run(float disp_width, float disp_height) = 0;
 
     virtual void SetDirection(int32_t dx, int32_t dy) = 0;
 

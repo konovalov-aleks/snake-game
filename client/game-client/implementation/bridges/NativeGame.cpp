@@ -38,12 +38,13 @@ CJNIEXPORT void JNICALL Java_ru_tensor_generated_Game_00024CppProxy_native_1ente
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, )
 }
 
-CJNIEXPORT void JNICALL Java_ru_tensor_generated_Game_00024CppProxy_native_1run(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef)
+CJNIEXPORT void JNICALL Java_ru_tensor_generated_Game_00024CppProxy_native_1run(JNIEnv* jniEnv, jobject /*this*/, jlong nativeRef, jfloat j_dispWidth, jfloat j_dispHeight)
 {
     try {
         DJINNI_FUNCTION_PROLOGUE1(jniEnv, nativeRef);
         const auto& ref = ::djinni::objectFromHandleAddress<::Game>(nativeRef);
-        ref->Run();
+        ref->Run(::djinni::F32::toCpp(jniEnv, j_dispWidth),
+                 ::djinni::F32::toCpp(jniEnv, j_dispHeight));
     } JNI_TRANSLATE_EXCEPTIONS_RETURN(jniEnv, )
 }
 

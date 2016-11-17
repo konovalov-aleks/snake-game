@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -128,6 +129,9 @@ public class MainActivity extends Activity {
                 final double MIN_FRAME_TIME = 10; // мс
 
                 double lastFrameTime = 0;
+                final float pixelSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 1,
+                        getResources().getDisplayMetrics());
+
                 while (running) {
                     double curFrameTime = System.currentTimeMillis() - lastFrameTime;
                     if (curFrameTime < MIN_FRAME_TIME) {
@@ -139,13 +143,13 @@ public class MainActivity extends Activity {
                     }
                     lastFrameTime = System.currentTimeMillis();
 
-                    Game.instance().run();
-
                     Canvas canvas = null;
                     try {
                         canvas = surfaceHolder.lockCanvas(null);
                         if (canvas == null)
                             continue;
+                        
+                        Game.instance().run(canvas.getWidth() / pixelSize, canvas.getHeight() / pixelSize);
 
                         Field fld = Game.instance().getField();
                         drawer.draw(canvas, fld);

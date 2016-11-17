@@ -13,7 +13,7 @@ class ClientGameRoom : public GameRoom
 public:
    static ClientGameRoom& Instance();
    virtual void SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction ) override;
-   void Run();
+   void Run( const Vector2D& viewport_center, const Vector2D& viewport_size );
 
 protected:
    virtual Snake DoEnter() override;
@@ -28,6 +28,10 @@ private:
 
    boost::thread mSyncThread;
    boost::posix_time::ptime mLastFrameTime;
+
+   boost::mutex mViewportMtx;
+   Vector2D mViewportCenter;
+   Vector2D mViewportSize;
 };
 
 } // namespace game
