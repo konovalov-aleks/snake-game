@@ -41,6 +41,7 @@
 		7290FAE11DDC9A32002835DB /* SDSnakeModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7290FADA1DDC9A32002835DB /* SDSnakeModel.mm */; };
 		7290FAE21DDC9A32002835DB /* SDVectorModel.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7290FADC1DDC9A32002835DB /* SDVectorModel.mm */; };
 		7290FAE31DDC9A32002835DB /* SDWalls.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7290FADE1DDC9A32002835DB /* SDWalls.mm */; };
+		7290FAEC1DDDE38D002835DB /* GameCanvasViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7290FAEB1DDDE38D002835DB /* GameCanvasViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +105,7 @@
 		7290FAE61DDC9A40002835DB /* snake_model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = snake_model.hpp; path = "../../../../game-client/implementation/generated/snake_model.hpp"; sourceTree = "<group>"; };
 		7290FAE71DDC9A40002835DB /* vector_model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = vector_model.hpp; path = "../../../../game-client/implementation/generated/vector_model.hpp"; sourceTree = "<group>"; };
 		7290FAE81DDC9A40002835DB /* walls.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = walls.hpp; path = "../../../../game-client/implementation/generated/walls.hpp"; sourceTree = "<group>"; };
+		7290FAEB1DDDE38D002835DB /* GameCanvasViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameCanvasViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 				7243DBCE1DDB0A9C00E14DFD /* Generated */,
 				7243DBB31DDAF05D00E14DFD /* AppDelegate.swift */,
 				7243DBB51DDAF05D00E14DFD /* ViewController.swift */,
+				7290FAEB1DDDE38D002835DB /* GameCanvasViewDelegate.swift */,
 				7290FAC01DDC6FD1002835DB /* GameCanvasView.swift */,
 				7243DBB71DDAF05D00E14DFD /* Main.storyboard */,
 				7243DBBA1DDAF05D00E14DFD /* Assets.xcassets */,
@@ -357,6 +360,7 @@
 				7290FAD21DDC99E2002835DB /* SDVectorModel+Private.mm in Sources */,
 				7243DBB61DDAF05D00E14DFD /* ViewController.swift in Sources */,
 				7290FABF1DDB2C4E002835DB /* SwiftTryCatch.m in Sources */,
+				7290FAEC1DDDE38D002835DB /* GameCanvasViewDelegate.swift in Sources */,
 				7290FAE31DDC9A32002835DB /* SDWalls.mm in Sources */,
 				7290FAE21DDC9A32002835DB /* SDVectorModel.mm in Sources */,
 				7243DC001DDB0C9B00E14DFD /* DJIProxyCaches.mm in Sources */,

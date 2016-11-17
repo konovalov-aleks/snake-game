@@ -10,8 +10,8 @@ import UIKit
 
 class GameCanvasView: UIView {
     
-    // MARK: Constants
-    let backgroundImage: CGImage = UIImage(named: "Background")!.cgImage!
+    // MARK: Константы
+    let backgroundCGImage: CGImage = UIImage(named: "Background")!.cgImage!
     let mySnakeCGColor: CGColor = UIColor.blue.cgColor
     let otherSnakesCGColor: CGColor = UIColor.red.cgColor
     let whiteCGColor: CGColor = UIColor.white.cgColor
@@ -20,35 +20,49 @@ class GameCanvasView: UIView {
     
     let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
     
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
+    public var delegate: GameCanvasViewDelegate?
+    
     override func draw(_ rect: CGRect) {
         var cameraPos = SDVectorModel(x: 0, y: 0)
         
         let ctx = UIGraphicsGetCurrentContext()!
+        ctx.setLineJoin(.round)
+        ctx.setLineCap(.round)
+        ctx.setAllowsAntialiasing(true)
+        ctx.setShouldAntialias(true)
         
         let gameInstance = SDGame.instance()!
         gameInstance.run()
         let fld = gameInstance.getField()
+        // настраиваем камеру
         let mySnake = fld.mySnake
         if mySnake != nil {
             cameraPos = mySnake!.points[0]
         }
+        // отображаем задний фон
         drawBackground(ctx: ctx, startPoint: cameraPos)
         
         ctx.translateBy(x: self.frame.width / 2 - mmToPoints(CGFloat(cameraPos.x)), y: self.frame.height / 2 - mmToPoints(CGFloat(cameraPos.y)))
         
+        // рисуем стены
         drawWalls(ctx: ctx, walls: fld.walls)
         
-        // draw my snake
+        // Рисуем свою змейку
         if mySnake != nil {
             drawSnake(ctx: ctx, color: mySnakeCGColor, snake: mySnake!)
         }
-        // draw other players' snake
+        // Рисуем змейки других игроков
         let snakes = fld.snakes
         for snake in snakes {
             drawSnake(ctx: ctx, color: otherSnakesCGColor, snake: snake)
         }
+        // отрисовка бонусов
+        let bonuses = fld.bonuses
+        for bonus in bonuses {
+            drawBonus(ctx: ctx, bonus: bonus)
+        }
+        // после отрисовки делегируем контроллеру определение того, закончилась игра или нет
+        delegate?.handleGameOver()
     }
     
     func drawWalls(ctx: CGContext, walls: SDWalls) {
@@ -76,16 +90,16 @@ class GameCanvasView: UIView {
     }
     
     func drawBackground(ctx: CGContext, startPoint: SDVectorModel) {
-        let w = Float(backgroundImage.width)
-        let h = Float(backgroundImage.height)
-        let x = -startPoint.x.truncatingRemainder(dividingBy: w) - w
-        let y = -startPoint.y.truncatingRemainder(dividingBy: h) - h
-        ctx.draw(backgroundImage, in: CGRect(x: mmToPoints(CGFloat(x)), y: mmToPoints(CGFloat(y)), width: CGFloat(w), height: CGFloat(h)), byTiling: true)
+        let w = Float(backgroundCGImage.width)
+        let h = Float(backgroundCGImage.height)
+        let x = -Float(mmToPoints(CGFloat(startPoint.x))).truncatingRemainder(dividingBy: w) - w
+        let y = -Float(mmToPoints(CGFloat(startPoint.y))).truncatingRemainder(dividingBy: h) - h
+        ctx.draw(backgroundCGImage, in: CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h)), byTiling: true)
     }
     
     func drawEye(ctx: CGContext, position: SDVectorModel) {
-        let whiteRegionSize = mmToPoints(0.7)
-        let blackRegionSize = mmToPoints(0.3)
+        let whiteRegionSize = mmToPoints(1.4)
+        let blackRegionSize = mmToPoints(0.6)
         
         ctx.saveGState()
         ctx.setFillColor(whiteCGColor)
@@ -98,12 +112,22 @@ class GameCanvasView: UIView {
         ctx.restoreGState()
     }
     
+    func drawBonus(ctx: CGContext, bonus: SDVectorModel) {
+        let bonusRegionSize = mmToPoints(10)
+        
+        ctx.saveGState()
+        ctx.setFillColor(whiteCGColor)
+        ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.x)) - bonusRegionSize / 2,
+                                   y: mmToPoints(CGFloat(bonus.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
+        ctx.restoreGState()
+    }
+    
     func drawSnake(ctx: CGContext, color: CGColor, snake: SDSnakeModel) {
         let points = snake.points
         if points.isEmpty {
             return
         }
-        // draw snake body
+        // тело змеи
         let bodyPath: UIBezierPath = UIBezierPath()
         bodyPath.lineJoinStyle = .round
         bodyPath.lineCapStyle = .round
@@ -113,17 +137,14 @@ class GameCanvasView: UIView {
         }
         ctx.saveGState()
         ctx.setStrokeColor(color)
-        ctx.setLineJoin(.round)
-        ctx.setLineCap(.round)
         ctx.setLineWidth(mmToPoints(4))
-        ctx.setShouldAntialias(true)
         
         let cgBodyPath = bodyPath.cgPath
         ctx.addPath(cgBodyPath)
         ctx.strokePath()
         ctx.restoreGState()
         
-        // draw eyes
+        // глаза змеи
         drawEye(ctx: ctx, position: snake.leftEye)
         drawEye(ctx: ctx, position: snake.rightEye)
     }
@@ -132,8 +153,8 @@ class GameCanvasView: UIView {
         setNeedsDisplay()
     }
     
+    // конвертация миллиметров в user points
     func mmToPoints(_ mm: CGFloat) -> CGFloat {
-        // calculate pixels per mm
         let ppmm = ppi / 25.4
         let pixels = mm * ppmm
         return pixels / UIScreen.main.scale
