@@ -44,9 +44,11 @@ static_assert(__has_feature(objc_arc), "Djinni requires ARC to be enabled for th
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
 
-- (void)run {
+- (void)run:(float)dispWidth
+ dispHeight:(float)dispHeight {
     try {
-        _cppRefHandle.get()->Run();
+        _cppRefHandle.get()->Run(::djinni::F32::toCpp(dispWidth),
+                                 ::djinni::F32::toCpp(dispHeight));
     } DJINNI_TRANSLATE_EXCEPTIONS()
 }
 

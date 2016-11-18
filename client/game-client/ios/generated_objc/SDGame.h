@@ -12,7 +12,8 @@
 
 - (void)enter;
 
-- (void)run;
+- (void)run:(float)dispWidth
+ dispHeight:(float)dispHeight;
 
 - (void)setDirection:(int32_t)dx
                   dy:(int32_t)dy;

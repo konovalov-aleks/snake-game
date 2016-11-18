@@ -18,9 +18,18 @@ class GameCanvasView: UIView {
     let blackCGColor: CGColor = UIColor.black.cgColor
     let wallCGColor: CGColor = UIColor.yellow.cgColor
     
-    let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
+    static let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
+    static let screenDimsInMM = screenDimensionsInMM()
+    
+    let ciCtx = CIContext(eaglContext: EAGLContext(api: .openGLES2))
     
     public var delegate: GameCanvasViewDelegate?
+    
+    override class var layerClass: AnyClass {
+        get {
+            return CAEAGLLayer.self
+        }
+    }
     
     override func draw(_ rect: CGRect) {
         var cameraPos = SDVectorModel(x: 0, y: 0)
@@ -32,7 +41,7 @@ class GameCanvasView: UIView {
         ctx.setShouldAntialias(true)
         
         let gameInstance = SDGame.instance()!
-        gameInstance.run()
+        gameInstance.run(Float(GameCanvasView.screenDimsInMM.width), dispHeight: Float(GameCanvasView.screenDimsInMM.height))
         let fld = gameInstance.getField()
         // настраиваем камеру
         let mySnake = fld.mySnake
@@ -95,6 +104,7 @@ class GameCanvasView: UIView {
         let h = Float(backgroundCGImage.height)
         let x = -Float(mmToPoints(CGFloat(startPoint.x))).truncatingRemainder(dividingBy: w) - w
         let y = -Float(mmToPoints(CGFloat(startPoint.y))).truncatingRemainder(dividingBy: h) - h
+        let targetRect = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h))
         ctx.draw(backgroundCGImage, in: CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h)), byTiling: true)
     }
     
@@ -170,8 +180,17 @@ class GameCanvasView: UIView {
     
     // конвертация миллиметров в user points
     func mmToPoints(_ mm: CGFloat) -> CGFloat {
-        let ppmm = ppi / 25.4
+        let ppmm = GameCanvasView.ppi / 25.4
         let pixels = mm * ppmm
         return pixels / UIScreen.main.scale
+    }
+    
+    static func screenDimensionsInMM() -> CGSize {
+        let nativeBoundsRect = UIScreen.main.nativeBounds
+        
+        let ppmm = ppi / 25.4
+        let mmWidth = nativeBoundsRect.maxX / ppmm
+        let mmHeight = nativeBoundsRect.maxY / ppmm
+        return CGSize(width: mmWidth, height: mmHeight)
     }
 }

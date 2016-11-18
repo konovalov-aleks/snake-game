@@ -14,6 +14,7 @@ ClientGameRoom& ClientGameRoom::Instance()
 }
 
 ClientGameRoom::ClientGameRoom() :
+   mViewportMtx(),
    mSyncThread( &ClientGameRoom::SyncThreadFunc, this ),
    mLastFrameTime( boost::posix_time::microsec_clock::universal_time() )
 {}
