@@ -64,14 +64,18 @@ class ViewController: UIViewController, GameCanvasViewDelegate {
         SwiftTryCatch.tryRun({
             SDGame.instance()!.setDirection(dx, dy: dy)
         }, catchRun: { (error) in
-            print("An error occured while handling gesture recognition. Detailed error description: \(error)")
+            print("An error occurred while handling gesture recognition. Detailed error description: \(error)")
         }, finallyRun: nil)
     }
     
     func startGame() {
-        SDGame.instance()!.enter()
-        gameOver = false
-        usleep(10000) // спим 10мс чтобы дать время создаться змейке
+        SwiftTryCatch.tryRun({
+            SDGame.instance()!.enter()
+            self.gameOver = false
+            usleep(10000) // спим 10мс чтобы дать время создаться змейке
+        }, catchRun: { (error) in
+            print("An error occurred while entering the game. Detailed error description: \(error)")
+        }, finallyRun: nil)
     }
     
     func scheduleCanvasUpdating() {

@@ -116,12 +116,30 @@ class GameCanvasView: UIView {
     }
     
     func drawBonus(ctx: CGContext, bonus: SDVectorModel) {
-        let bonusRegionSize = mmToPoints(10)
+        let cgColorComponents = whiteCGColor.components!
+
+        var bonusRegionSize: CGFloat = mmToPoints(2)
         
         ctx.saveGState()
-        ctx.setFillColor(whiteCGColor)
-        ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.x)) - bonusRegionSize / 2,
-                                   y: mmToPoints(CGFloat(bonus.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
+        ctx.setShadow(offset: CGSize(width: 0, height: 0), blur: 2.5, color: blackCGColor)
+        for i in 1...3 {
+            ctx.saveGState()
+            // эмулируем LightingColorFilter из android
+            var adjustedCol: UIColor = UIColor()
+            if cgColorComponents.count == 4 {
+                adjustedCol = UIColor(red: cgColorComponents[0] * CGFloat(128 + i * 40) / 255,
+                                          green: cgColorComponents[1] * CGFloat(128 + i * 30) / 255,
+                                          blue: cgColorComponents[2] * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+            }
+            else if cgColorComponents.count == 2 {
+                adjustedCol = UIColor(white: cgColorComponents[0] * CGFloat(128 + i * 40) / 255, alpha: 1.0)
+            }
+            bonusRegionSize = CGFloat(2.0 - 0.4 * Double(i))
+            ctx.setFillColor(adjustedCol.cgColor)
+            ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.x)) - bonusRegionSize / 2,
+                                       y: mmToPoints(CGFloat(bonus.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
+            ctx.restoreGState()
+        }
         ctx.restoreGState()
     }
     
