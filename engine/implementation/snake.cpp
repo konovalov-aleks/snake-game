@@ -11,7 +11,7 @@ Snake::Snake()
    : mLinearSpeed()
 {}
 
-Snake::Snake( boost::uuids::uuid id, const Vector2D& pos, double speed, const Vector2D& direction,
+Snake::Snake( boost::uuids::uuid id, const Vector2D& pos, float speed, const Vector2D& direction,
               UInt32 length )
    : mLinearSpeed( speed ), mId( std::move( id ) ), mPoints( length, pos )
 {
@@ -24,11 +24,11 @@ void Snake::Move( int dt )
    {
       auto next = std::next( iter );
       if( SBIS_UNLIKELY( next == mPoints.rend() ) )
-         *iter += mSpeed * dt / 1000;
+         *iter += mSpeed * static_cast<float>( dt ) / 1000.0f;
       else
       {
          Vector2D delta( next->getX() - iter->getX(), next->getY() - iter->getY() );
-         delta *= dt / 100.0;
+         delta *= static_cast<float>( dt ) / 100.0f;
          *iter += delta;
       }
    }

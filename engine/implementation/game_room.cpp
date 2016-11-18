@@ -71,13 +71,13 @@ void GameRoom::Run( int dt )
 namespace
 {
 
-inline double area(const Vector2D& a, const Vector2D& b, const Vector2D& c)
+inline float area(const Vector2D& a, const Vector2D& b, const Vector2D& c)
 {
    return ( b.getX() - a.getX() ) * ( c.getY() - a.getY() ) -
           ( b.getY() - a.getY() ) * ( c.getX() - a.getX() );
 }
 
-inline bool intersect_1( double a, double b, double c, double d)
+inline bool intersect_1( float a, float b, float c, float d)
 {
    if( a > b )
       std::swap( a, b );
@@ -179,7 +179,16 @@ void GameRoom::ApplyStateDelta( GameState state )
    {
       boost::unique_lock<boost::mutex> lock( mPlayersMtx );
       for( Snake& s : state.players )
-         mPlayers[ s.ID() ] = std::move( s );
+      {
+         auto iter = mPlayers.find( s.ID() );
+         if( iter != mPlayers.end() )
+         {
+            auto& local_points = iter->second.Points();
+            auto& remote_points = s.Points();
+            for( size_t i = 0; i < std::min( local_points.size(), remote_points.size() ); ++i )
+               local_points[ i ] = remote_points[ i ];
+         }
+      }
    }
 }
 

@@ -148,7 +148,7 @@ public class MainActivity extends Activity {
                         canvas = surfaceHolder.lockCanvas(null);
                         if (canvas == null)
                             continue;
-                        
+
                         Game.instance().run(canvas.getWidth() / pixelSize, canvas.getHeight() / pixelSize);
 
                         Field fld = Game.instance().getField();
