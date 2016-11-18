@@ -21,15 +21,7 @@ class GameCanvasView: UIView {
     static let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
     static let screenDimsInMM = screenDimensionsInMM()
     
-    let ciCtx = CIContext(eaglContext: EAGLContext(api: .openGLES2))
-    
     public var delegate: GameCanvasViewDelegate?
-    
-    override class var layerClass: AnyClass {
-        get {
-            return CAEAGLLayer.self
-        }
-    }
     
     override func draw(_ rect: CGRect) {
         var cameraPos = SDVectorModel(x: 0, y: 0)
@@ -105,7 +97,7 @@ class GameCanvasView: UIView {
         let x = -Float(mmToPoints(CGFloat(startPoint.x))).truncatingRemainder(dividingBy: w) - w
         let y = -Float(mmToPoints(CGFloat(startPoint.y))).truncatingRemainder(dividingBy: h) - h
         let targetRect = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h))
-        ctx.draw(backgroundCGImage, in: CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h)), byTiling: true)
+        ctx.draw(backgroundCGImage, in: targetRect, byTiling: true)
     }
     
     func drawEye(ctx: CGContext, position: SDVectorModel) {

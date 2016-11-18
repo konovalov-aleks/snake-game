@@ -71,6 +71,7 @@ class ViewController: UIViewController, GameCanvasViewDelegate {
     func startGame() {
         SDGame.instance()!.enter()
         gameOver = false
+        usleep(10000) // спим 10мс чтобы дать время создаться змейке
     }
     
     func scheduleCanvasUpdating() {
