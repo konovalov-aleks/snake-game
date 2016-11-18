@@ -15,6 +15,7 @@ public:
 private:
    ServerGameRoom();
 
+   void PrepareBonuses();
    virtual Snake DoEnter() override;
    void GameLoopThreadFunc();
 
