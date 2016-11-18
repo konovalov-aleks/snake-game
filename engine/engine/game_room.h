@@ -44,7 +44,7 @@ protected:
 private:
    bool CheckCollisions( const Snake& snake, const Vector2D& old_head_pos );
    void OnSnakeKilled( const Snake& snake );
-   void EatBonuses( const Snake& snake, const Vector2D& old_head_pos );
+   void EatBonuses( Snake& snake, const Vector2D& old_head_pos );
 
    boost::unordered_map<boost::uuids::uuid, Snake> mPlayers;
    mutable boost::mutex mPlayersMtx;

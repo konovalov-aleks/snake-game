@@ -19,7 +19,20 @@ ServerGameRoom& ServerGameRoom::Instance()
 
 ServerGameRoom::ServerGameRoom() :
    mGameThread( boost::thread( &ServerGameRoom::GameLoopThreadFunc, this ) )
-{}
+{
+   PrepareBonuses();
+}
+
+void ServerGameRoom::PrepareBonuses()
+{
+   const size_t count = 50;
+   const auto& wd = WorldDimensions();
+   const int w = static_cast<int>( wd.second.getX() - wd.first.getX() );
+   const int h = static_cast<int>( wd.second.getY() - wd.first.getY() );
+   for( size_t i = 0; i < count; ++i )
+      AddBonus( Vector2D( static_cast<float>( rand() % w - w / 2 ),
+                          static_cast<float>( rand() % h - h / 2 ) ) );
+}
 
 void ServerGameRoom::GameLoopThreadFunc()
 {
@@ -40,7 +53,7 @@ Snake ServerGameRoom::DoEnter()
    Vector2D initial_pos( ( static_cast<float>( rand() % world_width ) + WorldDimensions().first.getX() ) / 2,
                          ( static_cast<float>( rand() % world_height ) + WorldDimensions().first.getY() ) / 2 );
    Vector2D direction( static_cast<float>( rand() % 100 - 50 ), static_cast<float>( rand() % 100 - 50 ) );
-   return Snake( GenerateUUIDRandomDevice(), std::move( initial_pos ), SNAKE_SPEED, std::move( direction ), 50 );
+   return Snake( GenerateUUIDRandomDevice(), std::move( initial_pos ), SNAKE_SPEED, std::move( direction ), 5 );
 }
 
 RPC_FUNC_2( L"GameRoom.SetPlayerDirection", void, GameRoom_SetPlayerDirection,

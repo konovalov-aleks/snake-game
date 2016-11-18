@@ -52,10 +52,10 @@ void ClientGameRoom::FastSync()
       Vector2D vpcenter, vpsize;
       {
       	boost::unique_lock<boost::mutex> lock( mViewportMtx );
-         vpcenter = mViewportCenter;
-         vpsize = mViewportSize;
+        vpcenter = mViewportCenter;
+        vpsize = mViewportSize;
       }
-       Run( vpcenter, vpsize );
+      Run( vpcenter, vpsize );
       blcore::EndPoint endpoint( L"gameserver" );
       ApplyStateDelta( blcore::Object( L"GameRoom", endpoint ).Invoke<GameState>( L"PartialState", vpcenter, vpsize ) );
        
