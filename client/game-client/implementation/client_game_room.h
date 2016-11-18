@@ -25,8 +25,8 @@ private:
    void FullSync();
 
    void SyncThreadFunc();
-    
-   boost::mutex mViewportMtx;
+
+   boost::mutex mViewportMtx, mRunMtx;
    Vector2D mViewportCenter;
    Vector2D mViewportSize;
     

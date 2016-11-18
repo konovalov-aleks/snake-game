@@ -29,9 +29,15 @@ void ClientGameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Ve
 
 void ClientGameRoom::Run( const Vector2D& viewport_center, const Vector2D& viewport_size )
 {
+   boost::unique_lock<boost::mutex> run_lock( mRunMtx );
+
    boost::posix_time::ptime now = boost::posix_time::microsec_clock::universal_time();
-   GameRoom::Run( static_cast<int>( ( now - mLastFrameTime ).total_milliseconds() ) );
-   mLastFrameTime = now;
+   const int time_delta = static_cast<int>( ( now - mLastFrameTime ).total_milliseconds() );
+   if( time_delta > 5 )
+   {
+      GameRoom::Run( static_cast<int>( ( now - mLastFrameTime ).total_milliseconds() ) );
+      mLastFrameTime = now;
+   }
 
    boost::unique_lock<boost::mutex> lock( mViewportMtx );
    mViewportCenter = viewport_center;
@@ -51,7 +57,7 @@ void ClientGameRoom::FastSync()
 
       Vector2D vpcenter, vpsize;
       {
-      	boost::unique_lock<boost::mutex> lock( mViewportMtx );
+        boost::unique_lock<boost::mutex> lock( mViewportMtx );
         vpcenter = mViewportCenter;
         vpsize = mViewportSize;
       }
@@ -72,7 +78,7 @@ void ClientGameRoom::FullSync()
    {
       Vector2D vpcenter, vpsize;
       {
-      	boost::unique_lock<boost::mutex> lock( mViewportMtx );
+         boost::unique_lock<boost::mutex> lock( mViewportMtx );
          vpcenter = mViewportCenter;
          vpsize = mViewportSize;
       }
