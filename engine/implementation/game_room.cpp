@@ -100,8 +100,8 @@ Vector2D RandomizeBonusPosition( const Vector2D& p )
    // выпадающих из умерших змей
    int x = static_cast<int>( p.getX() * 2 );
    int y = static_cast<int>( p.getY() * 2 );
-   x += ( x * 997 ) % 30 + ( y * 619 ) % 30 - 30;
-   y += ( x * 787 ) % 30 + ( y * 937 ) % 30 - 30;
+   x += static_cast<UInt16>( x * 997 ) % 5 + static_cast<UInt16>( y * 619 ) % 5 - 5;
+   y += static_cast<UInt16>( x * 787 ) % 5 + static_cast<UInt16>( y * 937 ) % 5 - 5;
    return Vector2D( static_cast<float>( x ) / 2.0f, static_cast<float>( y ) / 2.0f );
 }
 
