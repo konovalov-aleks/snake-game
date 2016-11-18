@@ -10,7 +10,7 @@ namespace game
 class Vector2D
 {
 public:
-   typedef double ValueT;
+   typedef float ValueT;
 
    Vector2D() : mX(), mY() {}
    Vector2D( ValueT x, ValueT y ) : mX( x ), mY( y ) {}

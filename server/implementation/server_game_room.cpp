@@ -37,9 +37,9 @@ Snake ServerGameRoom::DoEnter()
    // чтобы при старте сразу не врезаться в стены
    int world_width = static_cast<int>( WorldDimensions().second.getX() - WorldDimensions().first.getX() );
    int world_height = static_cast<int>( WorldDimensions().second.getY() - WorldDimensions().first.getY() );
-   Vector2D initial_pos( ( rand() % world_width + WorldDimensions().first.getX() ) / 2,
-                         ( rand() % world_height + WorldDimensions().first.getY() ) / 2 );
-   Vector2D direction( rand() % 100 - 50, rand() % 100 - 50 );
+   Vector2D initial_pos( ( static_cast<float>( rand() % world_width ) + WorldDimensions().first.getX() ) / 2,
+                         ( static_cast<float>( rand() % world_height ) + WorldDimensions().first.getY() ) / 2 );
+   Vector2D direction( static_cast<float>( rand() % 100 - 50 ), static_cast<float>( rand() % 100 - 50 ) );
    return Snake( GenerateUUIDRandomDevice(), std::move( initial_pos ), SNAKE_SPEED, std::move( direction ), 50 );
 }
 
@@ -63,10 +63,10 @@ RPC_FUNC_2( L"GameRoom.State", GameState, GameRoom_State,
    result = ServerGameRoom::Instance().State();
 
    // Возвращаем только объекты, которые входят в указанную область
-   const float minx = vp_center.getX() - vp_size.getX() / 2 - SNAKE_SPEED * 2;
-   const float maxx = vp_center.getX() + vp_size.getX() / 2 + SNAKE_SPEED * 2;
-   const float miny = vp_center.getY() - vp_size.getY() / 2 - SNAKE_SPEED * 2;
-   const float maxy = vp_center.getY() + vp_size.getY() / 2 + SNAKE_SPEED * 2;
+   const float minx = vp_center.getX() - vp_size.getX() / 2.0f - SNAKE_SPEED * 2.0f;
+   const float maxx = vp_center.getX() + vp_size.getX() / 2.0f + SNAKE_SPEED * 2.0f;
+   const float miny = vp_center.getY() - vp_size.getY() / 2.0f - SNAKE_SPEED * 2.0f;
+   const float maxy = vp_center.getY() + vp_size.getY() / 2.0f + SNAKE_SPEED * 2.0f;
 
    // Для змей расширяем границы на случай, если она приползет на экран в период между синхронизациями
    const float sminx = minx - SNAKE_SPEED * 2;
@@ -90,6 +90,26 @@ RPC_FUNC_2( L"GameRoom.State", GameState, GameRoom_State,
          const Vector2D& pos = b.Position();
          return pos.getX() < minx || pos.getX() > maxx || pos.getY() < miny || pos.getY() > maxy;
       } ), result.bonuses.end() );
+}
+
+RPC_FUNC_2( L"GameRoom.PartialState", GameState, GameRoom_PartialState,
+            Vector2D, L"vp_center", vp_center,
+            Vector2D, L"vp_size", vp_size )
+{
+   GameRoom_State( result, vp_center, vp_size );
+
+   result.bonuses.clear();
+
+   const size_t max_fast_sync_snake_len = 5;
+
+   // возвращаем только начальные точки змей, так как только их координаты могли сильно разойтись
+   // за время между синхронизациями
+   for( Snake& s : result.players )
+   {
+      auto& points = s.Points();
+      if( points.size() > max_fast_sync_snake_len )
+         points.resize( max_fast_sync_snake_len );
+   }
 }
 
 } // namespace game

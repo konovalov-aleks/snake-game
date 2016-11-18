@@ -46,6 +46,21 @@ Snake ClientGameRoom::DoEnter()
 
 void ClientGameRoom::FastSync()
 {
+   try
+   {
+      Vector2D vpcenter, vpsize;
+      {
+      	boost::unique_lock<boost::mutex> lock( mViewportMtx );
+         vpcenter = mViewportCenter;
+         vpsize = mViewportSize;
+      }
+      blcore::EndPoint endpoint( L"gameserver" );
+      ApplyStateDelta( blcore::Object( L"GameRoom", endpoint ).Invoke<GameState>( L"PartialState", vpcenter, vpsize ) );
+   }
+   catch( const Exception& ex )
+   {
+      ErrorMsg( L"Synchronization failed: " + ex.ErrorMessage() );
+   }
 }
 
 void ClientGameRoom::FullSync()
@@ -72,8 +87,13 @@ void ClientGameRoom::SyncThreadFunc()
 {
    for( ;; )
    {
+      for( int i = 0; i < 10; ++i )
+      {
+         FastSync();
+         boost::this_thread::sleep( boost::posix_time::milliseconds( 50 ) );
+      }
       FullSync();
-      boost::this_thread::sleep( boost::posix_time::milliseconds( 100 ) );
+      boost::this_thread::sleep( boost::posix_time::milliseconds( 50 ) );
    }
 }
 
