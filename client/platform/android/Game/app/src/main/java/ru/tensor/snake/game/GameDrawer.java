@@ -103,6 +103,11 @@ final class GameDrawer {
         // рисуем стены
         drawWalls(canvas, fld.getWalls());
 
+        // рисуем бонусы
+        ArrayList<VectorModel> bonuses = fld.getBonuses();
+        for (VectorModel b : bonuses)
+            drawBonus(canvas, b);
+
         // рисуем змей
         if (my_snake != null)
             drawSnake(canvas, mySnakePaint, my_snake);
@@ -110,11 +115,6 @@ final class GameDrawer {
         ArrayList<SnakeModel> snakes = fld.getSnakes();
         for (SnakeModel snake : snakes)
             drawSnake(canvas, enemySnakePaint, snake);
-
-        // рисуем бонусы
-        ArrayList<VectorModel> bonuses = fld.getBonuses();
-        for (VectorModel b : bonuses)
-            drawBonus(canvas, b);
     }
 
     private float mmToPixels(float sizeInMM) {
@@ -150,7 +150,7 @@ final class GameDrawer {
 
     private void drawBonus(Canvas canvas, VectorModel position) {
         canvas.drawCircle(mmToPixels(position.getX()), mmToPixels(position.getY()),
-                mmToPixels(5), whitePaint);
+                mmToPixels(1), whitePaint);
     }
 
     private void drawBackground(Canvas canvas, VectorModel startPoint) {

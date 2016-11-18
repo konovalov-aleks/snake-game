@@ -44,6 +44,11 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Game.instance().enter();
                 gameOver = false;
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 mainMenu.setVisibility(View.INVISIBLE);
             }
         });
