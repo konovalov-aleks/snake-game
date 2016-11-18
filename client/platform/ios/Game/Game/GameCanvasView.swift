@@ -10,45 +10,61 @@ import UIKit
 
 class GameCanvasView: UIView {
     
-    // MARK: Constants
-    let backgroundImage: CGImage = UIImage(named: "Background")!.cgImage!
+    // MARK: Константы
+    let backgroundCGImage: CGImage = UIImage(named: "Background")!.cgImage!
     let mySnakeCGColor: CGColor = UIColor.blue.cgColor
     let otherSnakesCGColor: CGColor = UIColor.red.cgColor
     let whiteCGColor: CGColor = UIColor.white.cgColor
     let blackCGColor: CGColor = UIColor.black.cgColor
     let wallCGColor: CGColor = UIColor.yellow.cgColor
     
-    let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
+    static let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
+    static let screenDimsInMM = screenDimensionsInMM()
     
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
+    public var delegate: GameCanvasViewDelegate?
+    
     override func draw(_ rect: CGRect) {
         var cameraPos = SDVectorModel(x: 0, y: 0)
         
         let ctx = UIGraphicsGetCurrentContext()!
+        ctx.setLineJoin(.round)
+        ctx.setLineCap(.round)
+        ctx.setAllowsAntialiasing(true)
+        ctx.setShouldAntialias(true)
         
         let gameInstance = SDGame.instance()!
-        gameInstance.run()
+        gameInstance.run(Float(GameCanvasView.screenDimsInMM.width), dispHeight: Float(GameCanvasView.screenDimsInMM.height))
         let fld = gameInstance.getField()
+        // настраиваем камеру
         let mySnake = fld.mySnake
         if mySnake != nil {
             cameraPos = mySnake!.points[0]
         }
+        // отображаем задний фон
         drawBackground(ctx: ctx, startPoint: cameraPos)
         
         ctx.translateBy(x: self.frame.width / 2 - mmToPoints(CGFloat(cameraPos.x)), y: self.frame.height / 2 - mmToPoints(CGFloat(cameraPos.y)))
         
+        // рисуем стены
         drawWalls(ctx: ctx, walls: fld.walls)
         
-        // draw my snake
+        // отрисовка бонусов
+        let bonuses = fld.bonuses
+        for bonus in bonuses {
+            drawBonus(ctx: ctx, bonus: bonus)
+        }
+        
+        // Рисуем свою змейку
         if mySnake != nil {
             drawSnake(ctx: ctx, color: mySnakeCGColor, snake: mySnake!)
         }
-        // draw other players' snake
+        // Рисуем змейки других игроков
         let snakes = fld.snakes
         for snake in snakes {
             drawSnake(ctx: ctx, color: otherSnakesCGColor, snake: snake)
         }
+        // после отрисовки делегируем контроллеру определение того, закончилась игра или нет
+        delegate?.handleGameOver()
     }
     
     func drawWalls(ctx: CGContext, walls: SDWalls) {
@@ -76,16 +92,17 @@ class GameCanvasView: UIView {
     }
     
     func drawBackground(ctx: CGContext, startPoint: SDVectorModel) {
-        let w = Float(backgroundImage.width)
-        let h = Float(backgroundImage.height)
-        let x = -startPoint.x.truncatingRemainder(dividingBy: w) - w
-        let y = -startPoint.y.truncatingRemainder(dividingBy: h) - h
-        ctx.draw(backgroundImage, in: CGRect(x: mmToPoints(CGFloat(x)), y: mmToPoints(CGFloat(y)), width: CGFloat(w), height: CGFloat(h)), byTiling: true)
+        let w = Float(backgroundCGImage.width)
+        let h = Float(backgroundCGImage.height)
+        let x = -Float(mmToPoints(CGFloat(startPoint.x))).truncatingRemainder(dividingBy: w) - w
+        let y = -Float(mmToPoints(CGFloat(startPoint.y))).truncatingRemainder(dividingBy: h) - h
+        let targetRect = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h))
+        ctx.draw(backgroundCGImage, in: targetRect, byTiling: true)
     }
     
     func drawEye(ctx: CGContext, position: SDVectorModel) {
-        let whiteRegionSize = mmToPoints(0.7)
-        let blackRegionSize = mmToPoints(0.3)
+        let whiteRegionSize = mmToPoints(1.4)
+        let blackRegionSize = mmToPoints(0.6)
         
         ctx.saveGState()
         ctx.setFillColor(whiteCGColor)
@@ -98,12 +115,39 @@ class GameCanvasView: UIView {
         ctx.restoreGState()
     }
     
+    func drawBonus(ctx: CGContext, bonus: SDVectorModel) {
+        let cgColorComponents = whiteCGColor.components!
+
+        var bonusRegionSize: CGFloat = mmToPoints(2)
+        
+        ctx.saveGState()
+        for i in 1...3 {
+            ctx.saveGState()
+            // эмулируем LightingColorFilter из android
+            var adjustedCol: UIColor = UIColor()
+            if cgColorComponents.count == 4 {
+                adjustedCol = UIColor(red: cgColorComponents[0] * CGFloat(128 + i * 40) / 255,
+                                          green: cgColorComponents[1] * CGFloat(128 + i * 30) / 255,
+                                          blue: cgColorComponents[2] * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+            }
+            else if cgColorComponents.count == 2 {
+                adjustedCol = UIColor(white: cgColorComponents[0] * CGFloat(128 + i * 40) / 255, alpha: 1.0)
+            }
+            bonusRegionSize = mmToPoints(2.0) - mmToPoints(CGFloat(0.2 * Double(i)))
+            ctx.setFillColor(adjustedCol.cgColor)
+            ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.x)) - bonusRegionSize / 2,
+                                       y: mmToPoints(CGFloat(bonus.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
+            ctx.restoreGState()
+        }
+        ctx.restoreGState()
+    }
+    
     func drawSnake(ctx: CGContext, color: CGColor, snake: SDSnakeModel) {
         let points = snake.points
         if points.isEmpty {
             return
         }
-        // draw snake body
+        // тело змеи
         let bodyPath: UIBezierPath = UIBezierPath()
         bodyPath.lineJoinStyle = .round
         bodyPath.lineCapStyle = .round
@@ -112,18 +156,29 @@ class GameCanvasView: UIView {
             bodyPath.addLine(to: CGPoint(x: mmToPoints(CGFloat(p.x)), y: mmToPoints(CGFloat(p.y))))
         }
         ctx.saveGState()
-        ctx.setStrokeColor(color)
-        ctx.setLineJoin(.round)
-        ctx.setLineCap(.round)
-        ctx.setLineWidth(mmToPoints(4))
-        ctx.setShouldAntialias(true)
+        
+        ctx.setShadow(offset: CGSize(width: 0, height: 0), blur: 2.5, color: blackCGColor)
         
         let cgBodyPath = bodyPath.cgPath
-        ctx.addPath(cgBodyPath)
-        ctx.strokePath()
+        let cgColorComponents = color.components!
+        
+        for i in 1...3 {
+            ctx.saveGState()
+            ctx.setLineWidth(mmToPoints(CGFloat(3.0 - 0.4 * Double(i))))
+            // эмулируем LightingColorFilter из android
+            
+            let adjustedCol = UIColor(red: cgColorComponents[0] * CGFloat(128 + i * 40) / 255,
+                                      green: cgColorComponents[1] * CGFloat(128 + i * 30) / 255,
+                                      blue: cgColorComponents[2] * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+            ctx.setStrokeColor(adjustedCol.cgColor)
+            ctx.addPath(cgBodyPath)
+            ctx.strokePath()
+            ctx.restoreGState()
+        }
+        
         ctx.restoreGState()
         
-        // draw eyes
+        // глаза змеи
         drawEye(ctx: ctx, position: snake.leftEye)
         drawEye(ctx: ctx, position: snake.rightEye)
     }
@@ -132,10 +187,19 @@ class GameCanvasView: UIView {
         setNeedsDisplay()
     }
     
+    // конвертация миллиметров в user points
     func mmToPoints(_ mm: CGFloat) -> CGFloat {
-        // calculate pixels per mm
-        let ppmm = ppi / 25.4
+        let ppmm = GameCanvasView.ppi / 25.4
         let pixels = mm * ppmm
         return pixels / UIScreen.main.scale
+    }
+    
+    static func screenDimensionsInMM() -> CGSize {
+        let nativeBoundsRect = UIScreen.main.nativeBounds
+        
+        let ppmm = ppi / 25.4
+        let mmWidth = nativeBoundsRect.maxX / ppmm
+        let mmHeight = nativeBoundsRect.maxY / ppmm
+        return CGSize(width: mmWidth, height: mmHeight)
     }
 }

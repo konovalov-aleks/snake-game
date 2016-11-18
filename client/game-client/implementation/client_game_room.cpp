@@ -14,6 +14,7 @@ ClientGameRoom& ClientGameRoom::Instance()
 }
 
 ClientGameRoom::ClientGameRoom() :
+   mViewportMtx(),
    mSyncThread( &ClientGameRoom::SyncThreadFunc, this ),
    mLastFrameTime( boost::posix_time::microsec_clock::universal_time() )
 {}
@@ -53,6 +54,7 @@ void ClientGameRoom::FastSync()
 {
    try
    {
+
       Vector2D vpcenter, vpsize;
       {
         boost::unique_lock<boost::mutex> lock( mViewportMtx );
@@ -62,6 +64,7 @@ void ClientGameRoom::FastSync()
       Run( vpcenter, vpsize );
       blcore::EndPoint endpoint( L"gameserver" );
       ApplyStateDelta( blcore::Object( L"GameRoom", endpoint ).Invoke<GameState>( L"PartialState", vpcenter, vpsize ) );
+       
    }
    catch( const Exception& ex )
    {

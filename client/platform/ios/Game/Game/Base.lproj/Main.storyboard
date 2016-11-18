@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,8 +21,41 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC" customClass="GameCanvasView" customModule="Game" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLk-Aw-XdS">
+                                <rect key="frame" x="67" y="269" width="240" height="128"/>
+                                <subviews>
+                                    <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kY9-9K-ldp">
+                                        <rect key="frame" x="32.5" y="43" width="175" height="42"/>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <state key="normal" title="Start new game"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="onStartNewGame:" destination="BYZ-38-t0r" eventType="touchDown" id="qgU-aP-dao"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="kY9-9K-ldp" firstAttribute="centerX" secondItem="HLk-Aw-XdS" secondAttribute="centerX" id="8Su-OV-abB"/>
+                                    <constraint firstItem="kY9-9K-ldp" firstAttribute="centerY" secondItem="HLk-Aw-XdS" secondAttribute="centerY" id="wlA-S9-tiB"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="HLk-Aw-XdS" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7T7-Uq-FH9"/>
+                            <constraint firstItem="HLk-Aw-XdS" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BuK-pF-g3k"/>
+                            <constraint firstItem="HLk-Aw-XdS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="51" id="J7G-4Q-I2c"/>
+                            <constraint firstItem="HLk-Aw-XdS" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="249" id="fl9-Zh-EfL"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mainMenuView" destination="HLk-Aw-XdS" id="pEw-Ee-4s6"/>
+                        <outlet property="startGameButton" destination="kY9-9K-ldp" id="Kq3-VL-oS2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

@@ -26,12 +26,12 @@ private:
 
    void SyncThreadFunc();
 
-   boost::thread mSyncThread;
-   boost::posix_time::ptime mLastFrameTime;
-
    boost::mutex mViewportMtx, mRunMtx;
    Vector2D mViewportCenter;
    Vector2D mViewportSize;
+    
+   boost::thread mSyncThread;
+   boost::posix_time::ptime mLastFrameTime;
 };
 
 } // namespace game
