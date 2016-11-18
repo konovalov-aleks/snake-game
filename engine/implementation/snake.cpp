@@ -41,6 +41,11 @@ void Snake::SetDirection( Vector2D direction )
    mSpeed = direction * mLinearSpeed;
 }
 
+void Snake::Grow( size_t size )
+{
+   mPoints.insert( mPoints.end(), size, mPoints.back() );
+}
+
 } // namespace game
 
 void Serialization<game::Snake>::Read( IObjectReader& reader, game::Snake& snake )

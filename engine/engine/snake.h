@@ -27,6 +27,8 @@ public:
    void SetDirection( Vector2D direction );
    void Move( int dt );
 
+   void Grow( size_t size );
+
    const boost::uuids::uuid& ID() const { return mId; }
 
 private:

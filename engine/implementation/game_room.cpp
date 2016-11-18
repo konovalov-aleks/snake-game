@@ -94,6 +94,17 @@ bool intersect( const Vector2D& a, const Vector2D& b, const Vector2D& c, const V
        && area( c, d, a ) * area( c, d, b ) <= 0;
 }
 
+Vector2D RandomizeBonusPosition( const Vector2D& p )
+{
+   // детерминированный алгоритм, псевдорандомизирующий позиции бонусов,
+   // выпадающих из умерших змей
+   int x = static_cast<int>( p.getX() * 2 );
+   int y = static_cast<int>( p.getY() * 2 );
+   x += ( x * 997 ) % 30 + ( y * 619 ) % 30 - 30;
+   y += ( x * 787 ) % 30 + ( y * 937 ) % 30 - 30;
+   return Vector2D( static_cast<float>( x ) / 2.0f, static_cast<float>( y ) / 2.0f );
+}
+
 } // namespace
 
 bool GameRoom::CheckCollisions( const Snake& snake, const Vector2D& old_head_pos )
@@ -105,7 +116,7 @@ bool GameRoom::CheckCollisions( const Snake& snake, const Vector2D& old_head_pos
          continue;
       const auto& points = s.second.Points();
       for( size_t i = 1; i < points.size(); ++i )
-         if( intersect( points[i - 1], points[i], head_pos, old_head_pos ) )
+         if( intersect( points[ i - 1 ], points[ i ], head_pos, old_head_pos ) )
             return true;
    }
    return false;
@@ -114,12 +125,26 @@ bool GameRoom::CheckCollisions( const Snake& snake, const Vector2D& old_head_pos
 void GameRoom::OnSnakeKilled( const Snake& snake )
 {
    for( const Vector2D& p : snake.Points() )
-      AddBonus( p );
+      AddBonus( RandomizeBonusPosition( p ) );
 }
 
-void GameRoom::EatBonuses( const Snake& /*snake*/, const Vector2D& /*old_head_pos*/ )
+void GameRoom::EatBonuses( Snake& snake, const Vector2D& /*old_head_pos*/ )
 {
-   // TODO найти бонусы, которые съела змея за данный такт, убрать их с поля и увеличить змею
+   const float eat_radius = 3.0f;
+   const Vector2D& head_pos = snake.Points()[0];
+
+   boost::unique_lock<boost::mutex> lock( mBonusesMtx );
+   std::vector<decltype(mBonuses)::iterator> eated_bonuses;
+   for( auto iter = mBonuses.begin(); iter != mBonuses.end(); ++iter )
+   {
+      const float dx = head_pos.getX() - iter->Position().getX();
+      const float dy = head_pos.getY() - iter->Position().getY();
+      if( dx * dx + dy * dy <= eat_radius * eat_radius )
+         eated_bonuses.push_back( iter );
+   }
+   snake.Grow( eated_bonuses.size() );
+   for( auto& it : eated_bonuses )
+      mBonuses.erase( it );
 }
 
 std::vector<Snake> GameRoom::Players() const
