@@ -212,6 +212,7 @@ void GameRoom::ApplyStateDelta( GameState state )
             auto& remote_points = s.Points();
             for( size_t i = 0; i < std::min( local_points.size(), remote_points.size() ); ++i )
                local_points[ i ] = remote_points[ i ];
+            iter->second.SetDirection( s.Speed() );
          }
       }
    }
