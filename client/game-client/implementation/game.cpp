@@ -105,7 +105,8 @@ Field GameImpl::GetField()
 
       VectorModel left_eye( head.getX() - dir.getY(), head.getY() + dir.getX() );
       VectorModel right_eye( head.getX() + dir.getY(), head.getY() - dir.getX() );
-      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ), ColorModel(0,255,0) );
+      UInt32 player_color = player.Color();
+      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ), ColorModel(player_color & 0xff, (player_color>>8) & 0xff, (player_color>>16)&0xff) );
       if( is_my_snake )
          cur_snake = std::move( snake );
       else

@@ -126,7 +126,7 @@ class GameCanvasView: UIView {
             
             adjustedCol = UIColor(red: CGFloat(bonus.color.red / 255) * CGFloat(128 + i * 40) / 255,
                                           green: CGFloat(bonus.color.green / 255) * CGFloat(128 + i * 30) / 255,
-                                          blue: CGFloat(bonus.color.blue / 255) * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+                                          blue: CGFloat(bonus.color.blue / 255) * CGFloat(128 + i * 30) / 255, alpha: 0.6)
             bonusRegionSize = mmToPoints(2.0) - mmToPoints(CGFloat(0.2 * Double(i)))
             ctx.setFillColor(adjustedCol.cgColor)
             ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.position.x)) - bonusRegionSize / 2,
@@ -160,9 +160,9 @@ class GameCanvasView: UIView {
             ctx.setLineWidth(mmToPoints(CGFloat(3.0 - 0.4 * Double(i))))
             // эмулируем LightingColorFilter из android
             
-            let adjustedCol = UIColor(red: CGFloat(snake.color.red / 255) * CGFloat(128 + i * 40) / 255,
-                                      green: CGFloat(snake.color.green / 255) * CGFloat(128 + i * 30) / 255,
-                                      blue: CGFloat(snake.color.blue / 255) * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+            let adjustedCol = UIColor(red: CGFloat(snake.color.red) / 255.0 * CGFloat(128 + i * 40) / 255,
+                                      green: CGFloat(snake.color.green) / 255.0 * CGFloat(128 + i * 30) / 255,
+                                      blue: CGFloat(snake.color.blue) / 255.0 * CGFloat(128 + i * 30) / 255, alpha: 1.0)
             ctx.setStrokeColor(adjustedCol.cgColor)
             ctx.addPath(cgBodyPath)
             ctx.strokePath()
