@@ -15,6 +15,7 @@ import android.util.TypedValue;
 
 import java.util.ArrayList;
 
+import ru.tensor.generated.BonusModel;
 import ru.tensor.generated.Field;
 import ru.tensor.generated.SnakeModel;
 import ru.tensor.generated.VectorModel;
@@ -26,9 +27,9 @@ final class GameDrawer {
     Resources resources;
 
     private final Paint whitePaint;
+    private final Paint bonusPaint;
     private final Paint blackPaint;
-    private final Paint enemySnakePaint;
-    private final Paint mySnakePaint;
+    private final Paint snakePaint;
     private final Paint wallsPaint;
 
     private final Bitmap backgroundImage;
@@ -48,6 +49,8 @@ final class GameDrawer {
             }
         };
 
+        bonusPaint = new Paint(whitePaint);
+
         blackPaint = new Paint() {
             {
                 setStyle(Paint.Style.FILL);
@@ -56,7 +59,7 @@ final class GameDrawer {
             }
         };
 
-        enemySnakePaint = new Paint() {
+        snakePaint = new Paint() {
             {
                 setStyle(Paint.Style.STROKE);
                 setStrokeCap(Paint.Cap.ROUND);
@@ -66,12 +69,6 @@ final class GameDrawer {
                 setStrokeCap(Paint.Cap.ROUND);
                 setStrokeJoin(Paint.Join.ROUND);
                 setPathEffect(new CornerPathEffect(mmToPixels(10)));
-            }
-        };
-
-        mySnakePaint = new Paint(enemySnakePaint) {
-            {
-                setColor(Color.BLUE);
             }
         };
 
@@ -104,17 +101,17 @@ final class GameDrawer {
         drawWalls(canvas, fld.getWalls());
 
         // рисуем бонусы
-        ArrayList<VectorModel> bonuses = fld.getBonuses();
-        for (VectorModel b : bonuses)
+        ArrayList<BonusModel> bonuses = fld.getBonuses();
+        for (BonusModel b : bonuses)
             drawBonus(canvas, b);
 
         // рисуем змей
         if (my_snake != null)
-            drawSnake(canvas, mySnakePaint, my_snake);
+            drawSnake(canvas, my_snake);
 
         ArrayList<SnakeModel> snakes = fld.getSnakes();
         for (SnakeModel snake : snakes)
-            drawSnake(canvas, enemySnakePaint, snake);
+            drawSnake(canvas, snake);
     }
 
     private float mmToPixels(float sizeInMM) {
@@ -126,10 +123,10 @@ final class GameDrawer {
         canvas.drawCircle(mmToPixels(pos.getX()), mmToPixels(pos.getY()), mmToPixels(0.3f), blackPaint);
     }
 
-    private void drawSnake(Canvas canvas, Paint paint, SnakeModel snake) {
+    private void drawSnake(Canvas canvas, SnakeModel snake) {
         ArrayList<VectorModel> points = snake.getPoints();
-        if (points.isEmpty())
-            return;
+
+        snakePaint.setColor(Color.rgb(snake.getColor().getRed(), snake.getColor().getGreen(), snake.getColor().getBlue()));
 
         // рисуем тело
         Path path = new Path();
@@ -138,9 +135,9 @@ final class GameDrawer {
             path.lineTo(mmToPixels(p.getX()), mmToPixels(p.getY()));
 
         for (int i = 0; i < 3; ++i) {
-            paint.setStrokeWidth(mmToPixels(3f - 0.4f * i));
-            paint.setColorFilter(new LightingColorFilter(Color.rgb(128 + i * 40, 128 + i * 30, 128 + i * 30), 0));
-            canvas.drawPath(path, paint);
+            snakePaint.setStrokeWidth(mmToPixels(3f - 0.4f * i));
+            snakePaint.setColorFilter(new LightingColorFilter(Color.rgb(128 + i * 40, 128 + i * 30, 128 + i * 30), 0));
+            canvas.drawPath(path, snakePaint);
         }
 
         // рисуем глаза
@@ -148,9 +145,11 @@ final class GameDrawer {
         drawEye(canvas, snake.getRightEye());
     }
 
-    private void drawBonus(Canvas canvas, VectorModel position) {
-        canvas.drawCircle(mmToPixels(position.getX()), mmToPixels(position.getY()),
-                mmToPixels(1), whitePaint);
+    private void drawBonus(Canvas canvas, BonusModel bonus) {
+        bonusPaint.setColor(Color.rgb(bonus.getColor().getRed(), bonus.getColor().getGreen(), bonus.getColor().getBlue()));
+
+        canvas.drawCircle(mmToPixels(bonus.getPosition().getX()), mmToPixels(bonus.getPosition().getY()),
+                mmToPixels(1), bonusPaint);
     }
 
     private void drawBackground(Canvas canvas, VectorModel startPoint) {
