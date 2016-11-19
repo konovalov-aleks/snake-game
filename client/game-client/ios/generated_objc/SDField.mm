@@ -9,7 +9,7 @@
 - (nonnull instancetype)initWithWalls:(nonnull SDWalls *)walls
                                snakes:(nonnull NSArray<SDSnakeModel *> *)snakes
                               mySnake:(nullable SDSnakeModel *)mySnake
-                              bonuses:(nonnull NSArray<SDVectorModel *> *)bonuses
+                              bonuses:(nonnull NSArray<SDBonusModel *> *)bonuses
 {
     if (self = [super init]) {
         _walls = walls;
@@ -23,7 +23,7 @@
 + (nonnull instancetype)fieldWithWalls:(nonnull SDWalls *)walls
                                 snakes:(nonnull NSArray<SDSnakeModel *> *)snakes
                                mySnake:(nullable SDSnakeModel *)mySnake
-                               bonuses:(nonnull NSArray<SDVectorModel *> *)bonuses
+                               bonuses:(nonnull NSArray<SDBonusModel *> *)bonuses
 {
     return [[self alloc] initWithWalls:walls
                                 snakes:snakes

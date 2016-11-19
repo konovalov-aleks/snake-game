@@ -3,6 +3,7 @@
 
 #import "SDSnakeModel+Private.h"
 #import "DJIMarshal+Private.h"
+#import "SDColorModel+Private.h"
 #import "SDVectorModel+Private.h"
 #include <cassert>
 
@@ -13,14 +14,16 @@ auto SnakeModel::toCpp(ObjcType obj) -> CppType
     assert(obj);
     return {::djinni::List<::djinni_generated::VectorModel>::toCpp(obj.points),
             ::djinni_generated::VectorModel::toCpp(obj.leftEye),
-            ::djinni_generated::VectorModel::toCpp(obj.rightEye)};
+            ::djinni_generated::VectorModel::toCpp(obj.rightEye),
+            ::djinni_generated::ColorModel::toCpp(obj.color)};
 }
 
 auto SnakeModel::fromCpp(const CppType& cpp) -> ObjcType
 {
     return [[SDSnakeModel alloc] initWithPoints:(::djinni::List<::djinni_generated::VectorModel>::fromCpp(cpp.points))
                                         leftEye:(::djinni_generated::VectorModel::fromCpp(cpp.left_eye))
-                                       rightEye:(::djinni_generated::VectorModel::fromCpp(cpp.right_eye))];
+                                       rightEye:(::djinni_generated::VectorModel::fromCpp(cpp.right_eye))
+                                          color:(::djinni_generated::ColorModel::fromCpp(cpp.color))];
 }
 
 }  // namespace djinni_generated

@@ -105,7 +105,7 @@ Field GameImpl::GetField()
 
       VectorModel left_eye( head.getX() - dir.getY(), head.getY() + dir.getX() );
       VectorModel right_eye( head.getX() + dir.getY(), head.getY() - dir.getX() );
-      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ) );
+      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ), ColorModel(0,255,0) );
       if( is_my_snake )
          cur_snake = std::move( snake );
       else
@@ -113,10 +113,10 @@ Field GameImpl::GetField()
    }
 
    const auto& bonuses = ClientGameRoom::Instance().Bonuses();
-   std::vector<VectorModel> field_bonuses;
+   std::vector<BonusModel> field_bonuses;
    field_bonuses.reserve( bonuses.size() );
    for( const auto& b : bonuses )
-      field_bonuses.push_back( VectorModel( b.Position().getX(), b.Position().getY() ) );
+      field_bonuses.push_back( BonusModel( std::move( VectorModel(b.Position().getX(), b.Position().getY() )), std::move(ColorModel(255, 0, 255))) );
 
    const auto& dimensions = ClientGameRoom::Instance().WorldDimensions();
    return Field( Walls( dimensions.first.getX(), dimensions.first.getY(),

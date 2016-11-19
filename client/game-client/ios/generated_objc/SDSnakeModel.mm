@@ -9,11 +9,13 @@
 - (nonnull instancetype)initWithPoints:(nonnull NSArray<SDVectorModel *> *)points
                                leftEye:(nonnull SDVectorModel *)leftEye
                               rightEye:(nonnull SDVectorModel *)rightEye
+                                 color:(nonnull SDColorModel *)color
 {
     if (self = [super init]) {
         _points = [points copy];
         _leftEye = leftEye;
         _rightEye = rightEye;
+        _color = color;
     }
     return self;
 }
@@ -21,15 +23,17 @@
 + (nonnull instancetype)snakeModelWithPoints:(nonnull NSArray<SDVectorModel *> *)points
                                      leftEye:(nonnull SDVectorModel *)leftEye
                                     rightEye:(nonnull SDVectorModel *)rightEye
+                                       color:(nonnull SDColorModel *)color
 {
     return [[self alloc] initWithPoints:points
                                 leftEye:leftEye
-                               rightEye:rightEye];
+                               rightEye:rightEye
+                                  color:color];
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"<%@ %p points:%@ leftEye:%@ rightEye:%@>", self.class, (void *)self, self.points, self.leftEye, self.rightEye];
+    return [NSString stringWithFormat:@"<%@ %p points:%@ leftEye:%@ rightEye:%@ color:%@>", self.class, (void *)self, self.points, self.leftEye, self.rightEye, self.color];
 }
 
 @end

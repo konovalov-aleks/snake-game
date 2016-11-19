@@ -3,3 +3,5 @@
 @import "field.djinni"
 @import "vector.djinni"
 @import "walls.djinni"
+@import "bonus.djinni"
+@import "color.djinni"

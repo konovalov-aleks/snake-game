@@ -3,8 +3,8 @@
 
 #pragma once
 
+#include "bonus_model.hpp"
 #include "snake_model.hpp"
-#include "vector_model.hpp"
 #include "walls.hpp"
 #include <boost/optional.hpp>
 #include <utility>
@@ -14,12 +14,12 @@ struct Field final {
     Walls walls;
     std::vector<SnakeModel> snakes;
     boost::optional<SnakeModel> my_snake;
-    std::vector<VectorModel> bonuses;
+    std::vector<BonusModel> bonuses;
 
     Field(Walls walls_,
           std::vector<SnakeModel> snakes_,
           boost::optional<SnakeModel> my_snake_,
-          std::vector<VectorModel> bonuses_)
+          std::vector<BonusModel> bonuses_)
     : walls(std::move(walls_))
     , snakes(std::move(snakes_))
     , my_snake(std::move(my_snake_))

@@ -56,12 +56,12 @@ class GameCanvasView: UIView {
         
         // Рисуем свою змейку
         if mySnake != nil {
-            drawSnake(ctx: ctx, color: mySnakeCGColor, snake: mySnake!)
+            drawSnake(ctx: ctx, snake: mySnake!)
         }
         // Рисуем змейки других игроков
         let snakes = fld.snakes
         for snake in snakes {
-            drawSnake(ctx: ctx, color: otherSnakesCGColor, snake: snake)
+            drawSnake(ctx: ctx, snake: snake)
         }
         // после отрисовки делегируем контроллеру определение того, закончилась игра или нет
         delegate?.handleGameOver()
@@ -115,9 +115,7 @@ class GameCanvasView: UIView {
         ctx.restoreGState()
     }
     
-    func drawBonus(ctx: CGContext, bonus: SDVectorModel) {
-        let cgColorComponents = whiteCGColor.components!
-
+    func drawBonus(ctx: CGContext, bonus: SDBonusModel) {
         var bonusRegionSize: CGFloat = mmToPoints(2)
         
         ctx.saveGState()
@@ -125,24 +123,20 @@ class GameCanvasView: UIView {
             ctx.saveGState()
             // эмулируем LightingColorFilter из android
             var adjustedCol: UIColor = UIColor()
-            if cgColorComponents.count == 4 {
-                adjustedCol = UIColor(red: cgColorComponents[0] * CGFloat(128 + i * 40) / 255,
-                                          green: cgColorComponents[1] * CGFloat(128 + i * 30) / 255,
-                                          blue: cgColorComponents[2] * CGFloat(128 + i * 30) / 255, alpha: 1.0)
-            }
-            else if cgColorComponents.count == 2 {
-                adjustedCol = UIColor(white: cgColorComponents[0] * CGFloat(128 + i * 40) / 255, alpha: 1.0)
-            }
+            
+            adjustedCol = UIColor(red: CGFloat(bonus.color.red / 255) * CGFloat(128 + i * 40) / 255,
+                                          green: CGFloat(bonus.color.green / 255) * CGFloat(128 + i * 30) / 255,
+                                          blue: CGFloat(bonus.color.blue / 255) * CGFloat(128 + i * 30) / 255, alpha: 1.0)
             bonusRegionSize = mmToPoints(2.0) - mmToPoints(CGFloat(0.2 * Double(i)))
             ctx.setFillColor(adjustedCol.cgColor)
-            ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.x)) - bonusRegionSize / 2,
-                                       y: mmToPoints(CGFloat(bonus.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
+            ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.position.x)) - bonusRegionSize / 2,
+                                       y: mmToPoints(CGFloat(bonus.position.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
             ctx.restoreGState()
         }
         ctx.restoreGState()
     }
     
-    func drawSnake(ctx: CGContext, color: CGColor, snake: SDSnakeModel) {
+    func drawSnake(ctx: CGContext, snake: SDSnakeModel) {
         let points = snake.points
         if points.isEmpty {
             return
@@ -160,16 +154,15 @@ class GameCanvasView: UIView {
         ctx.setShadow(offset: CGSize(width: 0, height: 0), blur: 2.5, color: blackCGColor)
         
         let cgBodyPath = bodyPath.cgPath
-        let cgColorComponents = color.components!
         
         for i in 1...3 {
             ctx.saveGState()
             ctx.setLineWidth(mmToPoints(CGFloat(3.0 - 0.4 * Double(i))))
             // эмулируем LightingColorFilter из android
             
-            let adjustedCol = UIColor(red: cgColorComponents[0] * CGFloat(128 + i * 40) / 255,
-                                      green: cgColorComponents[1] * CGFloat(128 + i * 30) / 255,
-                                      blue: cgColorComponents[2] * CGFloat(128 + i * 30) / 255, alpha: 1.0)
+            let adjustedCol = UIColor(red: CGFloat(snake.color.red / 255) * CGFloat(128 + i * 40) / 255,
+                                      green: CGFloat(snake.color.green / 255) * CGFloat(128 + i * 30) / 255,
+                                      blue: CGFloat(snake.color.blue / 255) * CGFloat(128 + i * 30) / 255, alpha: 1.0)
             ctx.setStrokeColor(adjustedCol.cgColor)
             ctx.addPath(cgBodyPath)
             ctx.strokePath()

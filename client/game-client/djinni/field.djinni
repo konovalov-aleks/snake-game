@@ -1,10 +1,11 @@
 @import "snake.djinni"
 @import "vector.djinni"
 @import "walls.djinni"
+@import "bonus.djinni"
 
 field = record {
 	walls: walls;
 	snakes: list<snake_model>;
 	my_snake: optional<snake_model>;
-	bonuses: list<vector_model>;
+	bonuses: list<bonus_model>;
 }
