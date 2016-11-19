@@ -9,6 +9,7 @@ sbis_add_sdk_dependency(sbis-rpc300)
 
 sbis_set_sources(
    "implementation/bonus.cpp"
+   "implementation/color_generator.cpp"
    "implementation/game_room.cpp"
    "implementation/game_state.cpp"
    "implementation/snake.cpp"
@@ -17,6 +18,7 @@ sbis_set_sources(
 
 sbis_set_headers(
    "engine/bonus.h"
+   "engine/color_generator.h"
    "engine/game_room.h"
    "engine/game_state.h"
    "engine/snake.h"

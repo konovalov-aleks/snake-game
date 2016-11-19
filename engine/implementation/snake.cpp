@@ -8,12 +8,12 @@ namespace game
 {
 
 Snake::Snake()
-   : mLinearSpeed()
+   : mLinearSpeed(), mColor()
 {}
 
 Snake::Snake( boost::uuids::uuid id, const Vector2D& pos, float speed, const Vector2D& direction,
-              UInt32 length )
-   : mLinearSpeed( speed ), mId( std::move( id ) ), mPoints( length, pos )
+              UInt32 length, UInt32 color)
+   : mLinearSpeed( speed ), mId( std::move( id ) ), mColor( color ), mPoints( length, pos )
 {
    SetDirection( direction );
 }
@@ -54,6 +54,7 @@ void Serialization<game::Snake>::Read( IObjectReader& reader, game::Snake& snake
    ReadValue( *reader[ L"lspeed" ], snake.mLinearSpeed );
    ReadValue( *reader[ L"speed" ], snake.mSpeed );
    ReadValue( *reader[ L"points" ], snake.mPoints );
+   ReadValue( *reader[ L"color" ], snake.mColor );
 }
 
 void Serialization<game::Snake>::Write( IObjectWriter& writer, const game::Snake& snake )
@@ -71,6 +72,9 @@ void Serialization<game::Snake>::Write( IObjectWriter& writer, const game::Snake
    writer.BeginWriteObjectElem( L"points" );
    WriteValue( writer, snake.mPoints );
    writer.EndWriteObjectElem( L"points" );
+   writer.BeginWriteObjectElem( L"color" );
+   WriteValue( writer, snake.mColor );
+   writer.EndWriteObjectElem( L"color" );
    writer.EndWriteObject();
 }
 

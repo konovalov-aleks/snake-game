@@ -18,12 +18,12 @@ class Snake
 public:
    Snake();
    Snake( boost::uuids::uuid id, const Vector2D& pos, float speed,
-          const Vector2D& direction, UInt32 length );
+          const Vector2D& direction, UInt32 length, UInt32 color );
 
    const std::vector<Vector2D>& Points() const { return mPoints; }
    std::vector<Vector2D>& Points() { return mPoints; }
    const Vector2D& Speed() const { return mSpeed; }
-
+   UInt32 Color() const { return mColor; }
    void SetDirection( Vector2D direction );
    void Move( int dt );
 
@@ -36,7 +36,7 @@ private:
    float mLinearSpeed;
    UInt32 mLength;
    boost::uuids::uuid mId;
-
+   UInt32 mColor;
    std::vector<Vector2D> mPoints;
 
    friend class sbis::Serialization<game::Snake>;
