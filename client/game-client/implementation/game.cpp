@@ -8,6 +8,7 @@
 
 #include "client_game_room.h"
 #include "field.hpp"
+#include "engine/color_generator.h"
 #include "engine/vector2d.h"
 
 namespace sbis
@@ -63,6 +64,11 @@ void GameImpl::SetDirection(int32_t dx, int32_t dy)
    }
 }
 
+static ColorModel RGBToColorModel( UInt32 rgb )
+{
+    return ColorModel( rgb & 0xff, ( rgb >> 8 ) & 0xff, ( rgb >> 16 ) & 0xff );
+}
+
 Field GameImpl::GetField()
 {
    auto players = ClientGameRoom::Instance().Players();
@@ -106,7 +112,8 @@ Field GameImpl::GetField()
       VectorModel left_eye( head.getX() - dir.getY(), head.getY() + dir.getX() );
       VectorModel right_eye( head.getX() + dir.getY(), head.getY() - dir.getX() );
       UInt32 player_color = player.Color();
-      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ), ColorModel(player_color & 0xff, (player_color>>8) & 0xff, (player_color>>16)&0xff) );
+      SnakeModel snake( std::move( points ), std::move( left_eye ), std::move( right_eye ),
+                        RGBToColorModel( player_color ) );
       if( is_my_snake )
          cur_snake = std::move( snake );
       else
@@ -117,7 +124,13 @@ Field GameImpl::GetField()
    std::vector<BonusModel> field_bonuses;
    field_bonuses.reserve( bonuses.size() );
    for( const auto& b : bonuses )
-      field_bonuses.push_back( BonusModel( std::move( VectorModel(b.Position().getX(), b.Position().getY() )), std::move(ColorModel(255, 0, 255))) );
+   {
+      UInt32 color = GenerateColor( static_cast<int>(
+        static_cast<int>( b.Position().getX() / 5 ) * 11 +
+        static_cast<int>( b.Position().getY() / 5 ) * 13 ) );
+      field_bonuses.push_back( BonusModel( VectorModel( b.Position().getX(), b.Position().getY() ),
+                               RGBToColorModel( color ) ) );
+   }
 
    const auto& dimensions = ClientGameRoom::Instance().WorldDimensions();
    return Field( Walls( dimensions.first.getX(), dimensions.first.getY(),

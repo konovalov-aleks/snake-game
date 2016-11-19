@@ -3,8 +3,8 @@
 
 #include "NativeField.hpp"  // my header
 #include "Marshal.hpp"
+#include "NativeBonusModel.hpp"
 #include "NativeSnakeModel.hpp"
-#include "NativeVectorModel.hpp"
 #include "NativeWalls.hpp"
 
 namespace djinni_generated {
@@ -19,7 +19,7 @@ auto NativeField::fromCpp(JNIEnv* jniEnv, const CppType& c) -> ::djinni::LocalRe
                                                            ::djinni::get(::djinni_generated::NativeWalls::fromCpp(jniEnv, c.walls)),
                                                            ::djinni::get(::djinni::List<::djinni_generated::NativeSnakeModel>::fromCpp(jniEnv, c.snakes)),
                                                            ::djinni::get(::djinni::Optional<boost::optional, ::djinni_generated::NativeSnakeModel>::fromCpp(jniEnv, c.my_snake)),
-                                                           ::djinni::get(::djinni::List<::djinni_generated::NativeVectorModel>::fromCpp(jniEnv, c.bonuses)))};
+                                                           ::djinni::get(::djinni::List<::djinni_generated::NativeBonusModel>::fromCpp(jniEnv, c.bonuses)))};
     ::djinni::jniExceptionCheck(jniEnv);
     return r;
 }
@@ -31,7 +31,7 @@ auto NativeField::toCpp(JNIEnv* jniEnv, JniType j) -> CppType {
     return {::djinni_generated::NativeWalls::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mWalls)),
             ::djinni::List<::djinni_generated::NativeSnakeModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mSnakes)),
             ::djinni::Optional<boost::optional, ::djinni_generated::NativeSnakeModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mMySnake)),
-            ::djinni::List<::djinni_generated::NativeVectorModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mBonuses))};
+            ::djinni::List<::djinni_generated::NativeBonusModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mBonuses))};
 }
 
 }  // namespace djinni_generated

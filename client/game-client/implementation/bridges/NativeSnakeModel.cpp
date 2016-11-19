@@ -3,6 +3,7 @@
 
 #include "NativeSnakeModel.hpp"  // my header
 #include "Marshal.hpp"
+#include "NativeColorModel.hpp"
 #include "NativeVectorModel.hpp"
 
 namespace djinni_generated {
@@ -16,18 +17,20 @@ auto NativeSnakeModel::fromCpp(JNIEnv* jniEnv, const CppType& c) -> ::djinni::Lo
     auto r = ::djinni::LocalRef<JniType>{jniEnv->NewObject(data.clazz.get(), data.jconstructor,
                                                            ::djinni::get(::djinni::List<::djinni_generated::NativeVectorModel>::fromCpp(jniEnv, c.points)),
                                                            ::djinni::get(::djinni_generated::NativeVectorModel::fromCpp(jniEnv, c.left_eye)),
-                                                           ::djinni::get(::djinni_generated::NativeVectorModel::fromCpp(jniEnv, c.right_eye)))};
+                                                           ::djinni::get(::djinni_generated::NativeVectorModel::fromCpp(jniEnv, c.right_eye)),
+                                                           ::djinni::get(::djinni_generated::NativeColorModel::fromCpp(jniEnv, c.color)))};
     ::djinni::jniExceptionCheck(jniEnv);
     return r;
 }
 
 auto NativeSnakeModel::toCpp(JNIEnv* jniEnv, JniType j) -> CppType {
-    ::djinni::JniLocalScope jscope(jniEnv, 4);
+    ::djinni::JniLocalScope jscope(jniEnv, 5);
     assert(j != nullptr);
     const auto& data = ::djinni::JniClass<NativeSnakeModel>::get();
     return {::djinni::List<::djinni_generated::NativeVectorModel>::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mPoints)),
             ::djinni_generated::NativeVectorModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mLeftEye)),
-            ::djinni_generated::NativeVectorModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mRightEye))};
+            ::djinni_generated::NativeVectorModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mRightEye)),
+            ::djinni_generated::NativeColorModel::toCpp(jniEnv, jniEnv->GetObjectField(j, data.field_mColor))};
 }
 
 }  // namespace djinni_generated

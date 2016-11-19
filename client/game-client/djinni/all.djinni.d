@@ -1,1 +1,1 @@
-ios.djinni.out: all.djinni game.djinni field.djinni snake.djinni vector.djinni color.djinni walls.djinni bonus.djinni
+android.djinni.out: all.djinni game.djinni field.djinni snake.djinni vector.djinni color.djinni walls.djinni bonus.djinni

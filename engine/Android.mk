@@ -6,7 +6,8 @@ MODULE_SOURCES :=   implementation/vector2d.cpp \
                     implementation/game_room.cpp \
                     implementation/bonus.cpp \
                     implementation/snake.cpp \
-                    implementation/game_state.cpp
+                    implementation/game_state.cpp \
+                    implementation/color_generator.cpp
 
 LOCAL_MODULE    := game-engine
 LOCAL_SRC_FILES := $(MODULE_SOURCES)

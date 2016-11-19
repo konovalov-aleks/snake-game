@@ -14,13 +14,17 @@ public final class SnakeModel {
 
     /*package*/ final VectorModel mRightEye;
 
+    /*package*/ final ColorModel mColor;
+
     public SnakeModel(
             ArrayList<VectorModel> points,
             VectorModel leftEye,
-            VectorModel rightEye) {
+            VectorModel rightEye,
+            ColorModel color) {
         this.mPoints = points;
         this.mLeftEye = leftEye;
         this.mRightEye = rightEye;
+        this.mColor = color;
     }
 
     public ArrayList<VectorModel> getPoints() {
@@ -35,12 +39,17 @@ public final class SnakeModel {
         return mRightEye;
     }
 
+    public ColorModel getColor() {
+        return mColor;
+    }
+
     @Override
     public String toString() {
         return "SnakeModel{" +
                 "mPoints=" + mPoints +
                 "," + "mLeftEye=" + mLeftEye +
                 "," + "mRightEye=" + mRightEye +
+                "," + "mColor=" + mColor +
         "}";
     }
 

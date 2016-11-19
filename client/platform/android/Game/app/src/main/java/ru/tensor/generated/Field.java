@@ -14,13 +14,13 @@ public final class Field {
 
     /*package*/ final SnakeModel mMySnake;
 
-    /*package*/ final ArrayList<VectorModel> mBonuses;
+    /*package*/ final ArrayList<BonusModel> mBonuses;
 
     public Field(
             Walls walls,
             ArrayList<SnakeModel> snakes,
             SnakeModel mySnake,
-            ArrayList<VectorModel> bonuses) {
+            ArrayList<BonusModel> bonuses) {
         this.mWalls = walls;
         this.mSnakes = snakes;
         this.mMySnake = mySnake;
@@ -39,7 +39,7 @@ public final class Field {
         return mMySnake;
     }
 
-    public ArrayList<VectorModel> getBonuses() {
+    public ArrayList<BonusModel> getBonuses() {
         return mBonuses;
     }
 

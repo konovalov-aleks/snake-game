@@ -49,7 +49,11 @@ final class GameDrawer {
             }
         };
 
-        bonusPaint = new Paint(whitePaint);
+        bonusPaint = new Paint(whitePaint) {
+            {
+                setAlpha(153);
+            }
+        };
 
         blackPaint = new Paint() {
             {
