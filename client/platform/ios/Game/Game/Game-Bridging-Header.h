@@ -9,3 +9,5 @@
 #import "SDVectorModel.h"
 #import "SDSnakeModel.h"
 #import "SDWalls.h"
+#import "SDColorModel.h"
+#import "SDBonusModel.h"

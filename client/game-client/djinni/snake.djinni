@@ -1,7 +1,9 @@
 @import "vector.djinni"
+@import "color.djinni"
 
 snake_model = record {
 	points: list<vector_model>;
 	left_eye: vector_model;
 	right_eye: vector_model;
+	color: color_model;
 }

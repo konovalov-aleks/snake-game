@@ -1,0 +1,5 @@
+color_model = record {
+	red: i32;
+	green: i32;
+	blue: i32;
+}

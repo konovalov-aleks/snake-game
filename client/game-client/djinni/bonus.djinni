@@ -1,0 +1,7 @@
+@import "vector.djinni"
+@import "color.djinni"
+
+bonus_model = record {
+	position: vector_model;
+	color: color_model;
+}
