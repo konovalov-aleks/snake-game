@@ -41,7 +41,7 @@ class GameCanvasView: UIView {
             cameraPos = mySnake!.points[0]
         }
         // отображаем задний фон
-        drawBackground(ctx: ctx, startPoint: cameraPos)
+        //drawBackground(ctx: ctx, startPoint: cameraPos)
         
         ctx.translateBy(x: self.frame.width / 2 - mmToPoints(CGFloat(cameraPos.x)), y: self.frame.height / 2 - mmToPoints(CGFloat(cameraPos.y)))
         

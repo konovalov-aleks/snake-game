@@ -58,14 +58,16 @@ class ViewController: UIViewController, GameCanvasViewDelegate {
     }
     
     func onTouch(gr: UIGestureRecognizer) {
-        let touchPoint = gr.location(in: self.view)
-        let dx: Int32 = Int32(touchPoint.x - self.view.frame.width / 2)
-        let dy: Int32 = Int32(touchPoint.y - self.view.frame.height / 2)
-        SwiftTryCatch.tryRun({
-            SDGame.instance()!.setDirection(dx, dy: dy)
-        }, catchRun: { (error) in
-            print("An error occurred while handling gesture recognition. Detailed error description: \(error)")
-        }, finallyRun: nil)
+        DispatchQueue.global(qos: .userInitiated).async {
+            let touchPoint = gr.location(in: self.view)
+            let dx: Int32 = Int32(touchPoint.x - self.view.frame.width / 2)
+            let dy: Int32 = Int32(touchPoint.y - self.view.frame.height / 2)
+            SwiftTryCatch.tryRun({
+                SDGame.instance()!.setDirection(dx, dy: dy)
+            }, catchRun: { (error) in
+                print("An error occurred while handling gesture recognition. Detailed error description: \(error)")
+            }, finallyRun: nil)
+        }
     }
     
     func startGame() {
