@@ -18,19 +18,29 @@ class GameCanvasView: UIView {
     let blackCGColor: CGColor = UIColor.black.cgColor
     let wallCGColor: CGColor = UIColor.yellow.cgColor
     
+    var convertedBackgroundImage: CGImage?
+    
     static let ppi = UIScreen.main.scale * ((UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiom.pad) ? 132 : 163)
     static let screenDimsInMM = screenDimensionsInMM()
     
     public var delegate: GameCanvasViewDelegate?
+    var cameraPos = SDVectorModel(x: 0, y: 0)
     
     override func draw(_ rect: CGRect) {
-        var cameraPos = SDVectorModel(x: 0, y: 0)
-        
         let ctx = UIGraphicsGetCurrentContext()!
+        ctx.interpolationQuality = .none
         ctx.setLineJoin(.round)
         ctx.setLineCap(.round)
         ctx.setAllowsAntialiasing(true)
         ctx.setShouldAntialias(true)
+        
+        if convertedBackgroundImage == nil {
+            let colorSpace: CGColorSpace = ctx.colorSpace!
+            let bitmapInfo = ctx.bitmapInfo
+            let bitmapContext = CGContext(data: nil, width: Int(backgroundCGImage.width), height: Int(backgroundCGImage.height), bitsPerComponent: 8, bytesPerRow: 0, space: colorSpace, bitmapInfo: bitmapInfo.rawValue)
+            bitmapContext?.draw(backgroundCGImage, in: CGRect(x: 0, y: 0, width: backgroundCGImage.width, height: backgroundCGImage.height))
+            convertedBackgroundImage = bitmapContext?.makeImage()
+        }
         
         let gameInstance = SDGame.instance()!
         gameInstance.run(Float(GameCanvasView.screenDimsInMM.width), dispHeight: Float(GameCanvasView.screenDimsInMM.height))
@@ -40,8 +50,9 @@ class GameCanvasView: UIView {
         if mySnake != nil {
             cameraPos = mySnake!.points[0]
         }
+        
         // отображаем задний фон
-        //drawBackground(ctx: ctx, startPoint: cameraPos)
+        drawBackground(ctx: ctx, startPoint: cameraPos)
         
         ctx.translateBy(x: self.frame.width / 2 - mmToPoints(CGFloat(cameraPos.x)), y: self.frame.height / 2 - mmToPoints(CGFloat(cameraPos.y)))
         
@@ -63,6 +74,7 @@ class GameCanvasView: UIView {
         for snake in snakes {
             drawSnake(ctx: ctx, snake: snake)
         }
+        
         // после отрисовки делегируем контроллеру определение того, закончилась игра или нет
         delegate?.handleGameOver()
     }
@@ -97,7 +109,8 @@ class GameCanvasView: UIView {
         let x = -Float(mmToPoints(CGFloat(startPoint.x))).truncatingRemainder(dividingBy: w) - w
         let y = -Float(mmToPoints(CGFloat(startPoint.y))).truncatingRemainder(dividingBy: h) - h
         let targetRect = CGRect(x: CGFloat(x), y: CGFloat(y), width: CGFloat(w), height: CGFloat(h))
-        ctx.draw(backgroundCGImage, in: targetRect, byTiling: true)
+        
+        ctx.draw(convertedBackgroundImage!, in: targetRect, byTiling: true)
     }
     
     func drawEye(ctx: CGContext, position: SDVectorModel) {
@@ -117,10 +130,8 @@ class GameCanvasView: UIView {
     
     func drawBonus(ctx: CGContext, bonus: SDBonusModel) {
         var bonusRegionSize: CGFloat = mmToPoints(2)
-        
         ctx.saveGState()
         for i in 1...3 {
-            ctx.saveGState()
             // эмулируем LightingColorFilter из android
             var adjustedCol: UIColor = UIColor()
             
@@ -128,10 +139,10 @@ class GameCanvasView: UIView {
                                           green: CGFloat(bonus.color.green) / 255.0 * CGFloat(128 + i * 30) / 255,
                                           blue: CGFloat(bonus.color.blue) / 255.0 * CGFloat(128 + i * 30) / 255, alpha: 0.6)
             bonusRegionSize = mmToPoints(2.0) - mmToPoints(CGFloat(0.2 * Double(i)))
+            
             ctx.setFillColor(adjustedCol.cgColor)
             ctx.fillEllipse(in: CGRect(x: mmToPoints(CGFloat(bonus.position.x)) - bonusRegionSize / 2,
                                        y: mmToPoints(CGFloat(bonus.position.y)) - bonusRegionSize / 2, width: bonusRegionSize, height: bonusRegionSize))
-            ctx.restoreGState()
         }
         ctx.restoreGState()
     }
@@ -156,7 +167,6 @@ class GameCanvasView: UIView {
         let cgBodyPath = bodyPath.cgPath
         
         for i in 1...3 {
-            ctx.saveGState()
             ctx.setLineWidth(mmToPoints(CGFloat(3.0 - 0.4 * Double(i))))
             // эмулируем LightingColorFilter из android
             
@@ -166,7 +176,6 @@ class GameCanvasView: UIView {
             ctx.setStrokeColor(adjustedCol.cgColor)
             ctx.addPath(cgBodyPath)
             ctx.strokePath()
-            ctx.restoreGState()
         }
         
         ctx.restoreGState()
