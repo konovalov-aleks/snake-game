@@ -17,6 +17,7 @@ class ViewController: UIViewController, GameCanvasViewDelegate {
     var gameOver: Bool = true
     var tapGR: UITapGestureRecognizer!
     var panGR: UIPanGestureRecognizer!
+    var longTapGR: UILongPressGestureRecognizer!
     
     // MARK: Действия
     
@@ -35,6 +36,8 @@ class ViewController: UIViewController, GameCanvasViewDelegate {
         
         tapGR = UITapGestureRecognizer(target: self, action: #selector(onTouch))
         panGR = UIPanGestureRecognizer(target: self, action: #selector(onTouch))
+        longTapGR = UILongPressGestureRecognizer(target: self, action: #selector(onTouch))
+        longTapGR.minimumPressDuration = TimeInterval(0.1)
         
         scheduleCanvasUpdating()
     }
@@ -50,11 +53,13 @@ class ViewController: UIViewController, GameCanvasViewDelegate {
     func initGestureRecognizers() {
         self.view.addGestureRecognizer(tapGR)
         self.view.addGestureRecognizer(panGR)
+        self.view.addGestureRecognizer(longTapGR)
     }
     
     func clearGestureRecognizers() {
         self.view.removeGestureRecognizer(tapGR)
         self.view.removeGestureRecognizer(panGR)
+        self.view.removeGestureRecognizer(longTapGR)
     }
     
     func onTouch(gr: UIGestureRecognizer) {
