@@ -22,7 +22,6 @@ ClientGameRoom::ClientGameRoom() :
 void ClientGameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction )
 {
    blcore::EndPoint endpoint( L"gameserver" );
-   endpoint.SetTimeout( 2000 ); // 2c
    blcore::Object( L"GameRoom", endpoint ).Invoke<void>( L"SetPlayerDirection", pid, direction );
    GameRoom::SetPlayerDirection( pid, direction );
 }

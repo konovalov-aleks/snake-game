@@ -8,6 +8,8 @@
 
 #include <sbis-lib/utils/log_msg.hpp>
 
+#include <cmath>
+
 namespace sbis
 {
 namespace game
@@ -23,13 +25,32 @@ const Snake& GameRoom::Enter()
    return mPlayers.emplace( snake.ID(), snake ).first->second;
 }
 
+static const float MAX_ROTATE_ANGLE = 0.2f;
+static const float MAX_ROTATE_ANGLE_SIN = std::sin( MAX_ROTATE_ANGLE );
+static const float MAX_ROTATE_ANGLE_COS = std::cos( MAX_ROTATE_ANGLE );
+
 void GameRoom::SetPlayerDirection( const boost::uuids::uuid& pid, const Vector2D& direction )
 {
    boost::unique_lock<boost::mutex> lock( mPlayersMtx );
    auto player = mPlayers.find( boost::cref( pid ) );
    if( SBIS_UNLIKELY( player == mPlayers.end() ) )
       Error<Exception>( L"Unknown user <" + ToString( pid ) + L'>' );
-   player->second.SetDirection( direction );
+
+   Vector2D cur_direction = player->second.Speed();
+
+   const float p1 = direction.getX() * cur_direction.getY() - direction.getY() * cur_direction.getX();
+   const float p2 = direction.getX() * cur_direction.getX() + direction.getY() * cur_direction.getY();
+   const float angle = p2 == 0.0f ? ( p1 > 0 ? M_PI / 2.0f : -M_PI / 2.0f ) : std::atan2( p1, p2 );
+
+   Vector2D new_direction = direction;
+   if( fabs( angle ) > MAX_ROTATE_ANGLE )
+   {
+      float angle_sin = angle > 0 ? -MAX_ROTATE_ANGLE_SIN : MAX_ROTATE_ANGLE_SIN;
+      new_direction = Vector2D( cur_direction.getX() * MAX_ROTATE_ANGLE_COS - cur_direction.getY() * angle_sin,
+                                cur_direction.getX() * angle_sin + cur_direction.getY() * MAX_ROTATE_ANGLE_COS );
+   }
+
+   player->second.SetDirection( new_direction );
 }
 
 void GameRoom::AddBonus( const Vector2D& position )
@@ -98,11 +119,13 @@ Vector2D RandomizeBonusPosition( const Vector2D& p )
 {
    // детерминированный алгоритм, псевдорандомизирующий позиции бонусов,
    // выпадающих из умерших змей
-   int x = static_cast<int>( p.getX() * 2 );
-   int y = static_cast<int>( p.getY() * 2 );
-   x += static_cast<UInt16>( x * 997 ) % 5 + static_cast<UInt16>( y * 619 ) % 5 - 5;
-   y += static_cast<UInt16>( x * 787 ) % 5 + static_cast<UInt16>( y * 937 ) % 5 - 5;
-   return Vector2D( static_cast<float>( x ) / 2.0f, static_cast<float>( y ) / 2.0f );
+   int rounded_x = static_cast<int>( p.getX() / 3 );
+   int rounded_y = static_cast<int>( p.getY() / 3 );
+   float dx = static_cast<float>( static_cast<UInt16>( rounded_x * 997 ) % 5 +
+                                  static_cast<UInt16>( rounded_y * 619 ) % 5 - 5 ) / 2.0f;
+   float dy = static_cast<float>( static_cast<UInt16>( rounded_x * 787 ) % 5 +
+                                  static_cast<UInt16>( rounded_y * 937 ) % 5 - 5 ) / 2.0f;
+   return Vector2D( p.getX() + dx, p.getY() + dy );
 }
 
 } // namespace
